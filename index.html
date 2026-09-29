@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PERFUME BD | The Signature Collection</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050505;--char:#0e0e0e;--gold:#C5A059;--white:#F5F3EE;--mute:#9a968d}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'Montserrat',Helvetica,Arial,sans-serif;font-weight:300;line-height:1.9;letter-spacing:.02em}
+h1,h2,h3{font-family:'Playfair Display','Cormorant Garamond',Georgia,serif;font-weight:400;line-height:1.15}
+:focus-visible{outline:1px solid var(--gold);outline-offset:4px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+section{padding:160px 0}
+.small{font-size:.72rem;letter-spacing:.32em;color:var(--gold);text-transform:uppercase}
+.ghost{display:inline-block;background:none;border:1px solid var(--gold);color:var(--white);padding:16px 40px;font:400 .75rem 'Montserrat',sans-serif;letter-spacing:.3em;text-decoration:none;cursor:pointer;transition:background .4s,color .4s}
+.ghost:hover{background:var(--gold);color:var(--bg)}
+
+/* Hero */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 24px;background:radial-gradient(ellipse 40% 45% at 50% 42%,#1c1912 0%,var(--bg) 100%)}
+.hero .small{margin-bottom:48px}
+.hero svg{width:150px;height:auto;margin-bottom:48px}
+.hero h1{font-size:clamp(2.2rem,6vw,4.2rem);margin-bottom:44px;font-style:italic}
+
+/* Story */
+.story .grid{display:grid;grid-template-columns:1fr 1fr;gap:96px;align-items:center}
+.story h2{font-size:clamp(1.8rem,3.6vw,2.6rem);margin-bottom:32px}
+.story p{color:var(--mute);max-width:44ch}
+.story p+p{margin-top:20px}
+.close{aspect-ratio:4/5;background:radial-gradient(circle at 50% 30%,#221e14,var(--char) 70%);display:grid;place-items:center}
+.close svg{width:70%;height:auto}
+
+/* Pyramid */
+.pyr{text-align:center}
+.pyr h2{font-size:clamp(1.8rem,3.6vw,2.6rem);margin:20px 0 80px}
+.tiers{max-width:640px;margin:0 auto}
+.tier{padding:34px 20px;border-top:1px solid rgba(197,160,89,.35)}
+.tier:last-child{border-bottom:1px solid rgba(197,160,89,.35)}
+.tier:nth-child(1){width:60%;margin:0 auto}
+.tier:nth-child(2){width:80%;margin:0 auto}
+.tier:nth-child(3){width:100%}
+.tier h3{font-size:1.3rem;margin:6px 0}
+.tier p{color:var(--mute);font-size:.9rem}
+
+/* Gallery */
+.gal h2{text-align:center;font-size:clamp(1.8rem,3.6vw,2.6rem);margin:20px 0 90px}
+.gal .head{text-align:center}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.card{text-align:center;padding:60px 10px 40px;background:radial-gradient(ellipse 50% 40% at 50% 38%,#1a1710 0%,var(--char) 75%)}
+.card svg{width:90px;height:auto;margin-bottom:32px;filter:drop-shadow(0 30px 24px rgba(0,0,0,.7));animation:float 7s ease-in-out infinite}
+.card:nth-child(2) svg{animation-delay:-2.3s}
+.card:nth-child(3) svg{animation-delay:-4.6s}
+@keyframes float{50%{transform:translateY(-10px)}}
+.card h3{font-size:1.2rem}
+.card .pr{color:var(--gold);font-size:.85rem;letter-spacing:.15em;margin-top:6px}
+.card a{display:inline-block;margin-top:18px;font-size:.68rem;letter-spacing:.28em;color:var(--white);text-decoration:none;border-bottom:1px solid var(--gold);padding-bottom:3px}
+
+/* Reviews */
+.rev{text-align:center}
+.rev blockquote{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1.3rem,2.6vw,1.9rem);line-height:1.5;max-width:26ch;margin:0 auto 14px}
+.rev cite{font-style:normal;font-size:.72rem;letter-spacing:.28em;color:var(--gold)}
+.rev .q+.q{margin-top:96px}
+
+/* Order */
+.order{text-align:center}
+.box{max-width:440px;margin:60px auto 0;text-align:left;border:1px solid rgba(197,160,89,.4);padding:44px 36px;background:var(--char)}
+.order h2{font-size:clamp(1.8rem,3.6vw,2.6rem);margin-top:20px}
+label{display:block;font-size:.68rem;letter-spacing:.28em;color:var(--gold);text-transform:uppercase;margin-bottom:28px}
+input,select{display:block;width:100%;background:none;border:0;border-bottom:1px solid #3a372f;color:var(--white);font:300 1rem 'Montserrat',sans-serif;padding:10px 0;margin-top:6px;border-radius:0}
+select option{background:var(--char)}
+input:focus,select:focus{outline:0;border-color:var(--gold)}
+.buy{width:100%;background:var(--gold);color:var(--bg);border:0;padding:18px;font:500 .78rem 'Montserrat',sans-serif;letter-spacing:.3em;cursor:pointer;margin-top:6px;transition:background .3s}
+.buy:hover{background:#d8b878}
+footer{text-align:center;padding:60px 24px;font-size:.7rem;letter-spacing:.25em;color:var(--mute)}
+
+@media(max-width:820px){
+ section{padding:100px 0}
+ .story .grid{grid-template-columns:1fr;gap:56px}
+ .cards{grid-template-columns:1fr}
+ .box{padding:36px 24px}
+}
+@media(prefers-reduced-motion:reduce){.card svg{animation:none}html{scroll-beh
