@@ -1,84 +1,412 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PERFUME BD | The Signature Collection</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#050505;--char:#0e0e0e;--gold:#C5A059;--white:#F5F3EE;--mute:#9a968d}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--white);font-family:'Montserrat',Helvetica,Arial,sans-serif;font-weight:300;line-height:1.9;letter-spacing:.02em}
-h1,h2,h3{font-family:'Playfair Display','Cormorant Garamond',Georgia,serif;font-weight:400;line-height:1.15}
-:focus-visible{outline:1px solid var(--gold);outline-offset:4px}
-.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
-section{padding:160px 0}
-.small{font-size:.72rem;letter-spacing:.32em;color:var(--gold);text-transform:uppercase}
-.ghost{display:inline-block;background:none;border:1px solid var(--gold);color:var(--white);padding:16px 40px;font:400 .75rem 'Montserrat',sans-serif;letter-spacing:.3em;text-decoration:none;cursor:pointer;transition:background .4s,color .4s}
-.ghost:hover{background:var(--gold);color:var(--bg)}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfume BD — The Signature Collection</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Google Fonts: Cormorant Garamond & Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #FFFFFF;
+            color: #1A1A1A;
+        }
+        .font-serif-luxury {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        .gold-border {
+            border-color: #C5A059;
+        }
+        .gold-text {
+            color: #A38038;
+        }
+        .gold-bg {
+            background-color: #C5A059;
+        }
+        /* Custom scrollbar for horizontal swipe sections */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-[#C5A059] selection:text-white">
 
-/* Hero */
-.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 24px;background:radial-gradient(ellipse 40% 45% at 50% 42%,#1c1912 0%,var(--bg) 100%)}
-.hero .small{margin-bottom:48px}
-.hero svg{width:150px;height:auto;margin-bottom:48px}
-.hero h1{font-size:clamp(2.2rem,6vw,4.2rem);margin-bottom:44px;font-style:italic}
+    <!-- Navbar -->
+    <header class="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#" class="font-serif-luxury text-2xl tracking-widest text-black uppercase font-bold">
+                Perfume <span class="gold-text">BD</span>
+            </a>
+            <nav class="hidden md:flex items-center space-x-10 text-xs tracking-widest uppercase text-gray-600">
+                <a href="#showcase" class="hover:text-[#C5A059] transition-colors">Collection</a>
+                <a href="#categories" class="hover:text-[#C5A059] transition-colors">Categories</a>
+                <a href="#artistry" class="hover:text-[#C5A059] transition-colors">Artistry</a>
+                <a href="#order" class="hover:text-[#C5A059] transition-colors">Inquire</a>
+            </nav>
+            <div>
+                <a href="#order" class="text-xs uppercase tracking-widest px-5 py-2.5 border gold-border gold-text hover:bg-[#C5A059] hover:text-white transition-all duration-300">
+                    Secure Scent
+                </a>
+            </div>
+        </div>
+    </header>
 
-/* Story */
-.story .grid{display:grid;grid-template-columns:1fr 1fr;gap:96px;align-items:center}
-.story h2{font-size:clamp(1.8rem,3.6vw,2.6rem);margin-bottom:32px}
-.story p{color:var(--mute);max-width:44ch}
-.story p+p{margin-top:20px}
-.close{aspect-ratio:4/5;background:radial-gradient(circle at 50% 30%,#221e14,var(--char) 70%);display:grid;place-items:center}
-.close svg{width:70%;height:auto}
+    <!-- 1. AUTO-SLIDE HERO / FEATURED BANNER SECTION -->
+    <section class="relative pt-32 pb-16 overflow-hidden border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-8">
+                <span class="text-[10px] uppercase tracking-[0.3em] gold-text">Exclusive Allocations & Offers</span>
+                <h2 class="font-serif-luxury text-3xl md:text-4xl text-black mt-1">The Masterpiece Showcase</h2>
+            </div>
 
-/* Pyramid */
-.pyr{text-align:center}
-.pyr h2{font-size:clamp(1.8rem,3.6vw,2.6rem);margin:20px 0 80px}
-.tiers{max-width:640px;margin:0 auto}
-.tier{padding:34px 20px;border-top:1px solid rgba(197,160,89,.35)}
-.tier:last-child{border-bottom:1px solid rgba(197,160,89,.35)}
-.tier:nth-child(1){width:60%;margin:0 auto}
-.tier:nth-child(2){width:80%;margin:0 auto}
-.tier:nth-child(3){width:100%}
-.tier h3{font-size:1.3rem;margin:6px 0}
-.tier p{color:var(--mute);font-size:.9rem}
+            <!-- Slider Wrapper -->
+            <div class="relative overflow-hidden rounded-sm bg-[#FAFAFA] border border-gray-200 p-8 md:p-12 shadow-sm">
+                <div id="heroSlider" class="flex transition-transform duration-700 ease-in-out">
+                    
+                    <!-- Slide 1: Most Expensive / Signature Item -->
+                    <div class="min-w-full flex flex-col md:flex-row items-center justify-between gap-8">
+                        <div class="md:w-1/2 space-y-4">
+                            <span class="inline-block px-3 py-1 bg-[#C5A059]/10 gold-text text-[10px] tracking-widest uppercase border border-[#C5A059]/30">Crown Selection</span>
+                            <h1 class="font-serif-luxury text-4xl md:text-5xl text-black leading-tight">Imperial Majesty <br><span class="gold-text font-light italic">Pure Extrait</span></h1>
+                            <p class="text-gray-600 text-sm max-w-md font-light leading-relaxed">
+                                Crafted with rare white frankincense and golden amber notes. A masterpiece designed for those who command absolute presence.
+                            </p>
+                            <div class="text-2xl font-serif-luxury gold-text font-semibold">৳ 8,500 <span class="text-xs text-gray-400 font-normal line-through ml-2">৳ 10,000</span></div>
+                            <div class="pt-2">
+                                <a href="#order" class="inline-block px-8 py-3 gold-bg text-white text-xs font-semibold uppercase tracking-widest hover:opacity-90 transition-opacity">Acquire Now</a>
+                            </div>
+                        </div>
+                        <div class="md:w-1/2 flex justify-center">
+                            <div class="w-64 h-80 bg-white border border-gray-200 flex items-center justify-center relative shadow-md">
+                                <span class="absolute top-4 right-4 text-[10px] tracking-widest text-[#C5A059] uppercase">Limited 50pcs</span>
+                                <div class="text-center">
+                                    <div class="w-20 h-36 mx-auto bg-[#F4F4F4] border border-[#C5A059]/40 rounded-t-lg rounded-b-sm flex items-center justify-center shadow-inner relative">
+                                        <div class="absolute -top-4 w-8 h-4 bg-[#C5A059] rounded-t-sm"></div>
+                                        <span class="font-serif-luxury text-[10px] gold-text tracking-widest rotate-[-90deg]">IMPERIAL</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-/* Gallery */
-.gal h2{text-align:center;font-size:clamp(1.8rem,3.6vw,2.6rem);margin:20px 0 90px}
-.gal .head{text-align:center}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.card{text-align:center;padding:60px 10px 40px;background:radial-gradient(ellipse 50% 40% at 50% 38%,#1a1710 0%,var(--char) 75%)}
-.card svg{width:90px;height:auto;margin-bottom:32px;filter:drop-shadow(0 30px 24px rgba(0,0,0,.7));animation:float 7s ease-in-out infinite}
-.card:nth-child(2) svg{animation-delay:-2.3s}
-.card:nth-child(3) svg{animation-delay:-4.6s}
-@keyframes float{50%{transform:translateY(-10px)}}
-.card h3{font-size:1.2rem}
-.card .pr{color:var(--gold);font-size:.85rem;letter-spacing:.15em;margin-top:6px}
-.card a{display:inline-block;margin-top:18px;font-size:.68rem;letter-spacing:.28em;color:var(--white);text-decoration:none;border-bottom:1px solid var(--gold);padding-bottom:3px}
+                    <!-- Slide 2: Special Offer Product -->
+                    <div class="min-w-full flex flex-col md:flex-row items-center justify-between gap-8">
+                        <div class="md:w-1/2 space-y-4">
+                            <span class="inline-block px-3 py-1 bg-red-50 text-red-600 text-[10px] tracking-widest uppercase border border-red-200">Seasonal Offer — 20% Off</span>
+                            <h1 class="font-serif-luxury text-4xl md:text-5xl text-black leading-tight">Noir Royale <br><span class="gold-text font-light italic">Signature Edition</span></h1>
+                            <p class="text-gray-600 text-sm max-w-md font-light leading-relaxed">
+                                A harmonious blend of dark spices, French lavender, and rich leather. An unforgettable sensory signature for evenings.
+                            </p>
+                            <div class="text-2xl font-serif-luxury gold-text font-semibold">৳ 4,200 <span class="text-xs text-gray-400 font-normal line-through ml-2">৳ 5,500</span></div>
+                            <div class="pt-2">
+                                <a href="#order" class="inline-block px-8 py-3 gold-bg text-white text-xs font-semibold uppercase tracking-widest hover:opacity-90 transition-opacity">Claim Offer</a>
+                            </div>
+                        </div>
+                        <div class="md:w-1/2 flex justify-center">
+                            <div class="w-64 h-80 bg-white border border-gray-200 flex items-center justify-center relative shadow-md">
+                                <span class="absolute top-4 right-4 text-[10px] tracking-widest text-red-500 uppercase">Save ৳1,300</span>
+                                <div class="text-center">
+                                    <div class="w-20 h-36 mx-auto bg-[#1A1A1A] border border-gray-300 rounded-t-lg rounded-b-sm flex items-center justify-center shadow-inner relative">
+                                        <div class="absolute -top-4 w-8 h-4 bg-gray-400 rounded-t-sm"></div>
+                                        <span class="font-serif-luxury text-[10px] text-white tracking-widest rotate-[-90deg]">NOIR ROYALE</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-/* Reviews */
-.rev{text-align:center}
-.rev blockquote{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1.3rem,2.6vw,1.9rem);line-height:1.5;max-width:26ch;margin:0 auto 14px}
-.rev cite{font-style:normal;font-size:.72rem;letter-spacing:.28em;color:var(--gold)}
-.rev .q+.q{margin-top:96px}
+                    <!-- Slide 3: Velvet Bloom -->
+                    <div class="min-w-full flex flex-col md:flex-row items-center justify-between gap-8">
+                        <div class="md:w-1/2 space-y-4">
+                            <span class="inline-block px-3 py-1 bg-[#C5A059]/10 gold-text text-[10px] tracking-widest uppercase border border-[#C5A059]/30">Bestseller</span>
+                            <h1 class="font-serif-luxury text-4xl md:text-5xl text-black leading-tight">Velvet Bloom <br><span class="gold-text font-light italic">Ethereal Floral</span></h1>
+                            <p class="text-gray-600 text-sm max-w-md font-light leading-relaxed">
+                                Delicate notes of blooming white jasmine entwined with warm vanilla. Long-lasting elegance that stays through the day.
+                            </p>
+                            <div class="text-2xl font-serif-luxury gold-text font-semibold">৳ 3,800</div>
+                            <div class="pt-2">
+                                <a href="#order" class="inline-block px-8 py-3 gold-bg text-white text-xs font-semibold uppercase tracking-widest hover:opacity-90 transition-opacity">Acquire Now</a>
+                            </div>
+                        </div>
+                        <div class="md:w-1/2 flex justify-center">
+                            <div class="w-64 h-80 bg-white border border-gray-200 flex items-center justify-center relative shadow-md">
+                                <span class="absolute top-4 right-4 text-[10px] tracking-widest text-[#C5A059] uppercase">Trending</span>
+                                <div class="text-center">
+                                    <div class="w-20 h-36 mx-auto bg-[#F4F4F4] border border-[#C5A059]/40 rounded-t-lg rounded-b-sm flex items-center justify-center shadow-inner relative">
+                                        <div class="absolute -top-4 w-8 h-4 bg-[#C5A059] rounded-t-sm"></div>
+                                        <span class="font-serif-luxury text-[10px] gold-text tracking-widest rotate-[-90deg]">VELVET BLOOM</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-/* Order */
-.order{text-align:center}
-.box{max-width:440px;margin:60px auto 0;text-align:left;border:1px solid rgba(197,160,89,.4);padding:44px 36px;background:var(--char)}
-.order h2{font-size:clamp(1.8rem,3.6vw,2.6rem);margin-top:20px}
-label{display:block;font-size:.68rem;letter-spacing:.28em;color:var(--gold);text-transform:uppercase;margin-bottom:28px}
-input,select{display:block;width:100%;background:none;border:0;border-bottom:1px solid #3a372f;color:var(--white);font:300 1rem 'Montserrat',sans-serif;padding:10px 0;margin-top:6px;border-radius:0}
-select option{background:var(--char)}
-input:focus,select:focus{outline:0;border-color:var(--gold)}
-.buy{width:100%;background:var(--gold);color:var(--bg);border:0;padding:18px;font:500 .78rem 'Montserrat',sans-serif;letter-spacing:.3em;cursor:pointer;margin-top:6px;transition:background .3s}
-.buy:hover{background:#d8b878}
-footer{text-align:center;padding:60px 24px;font-size:.7rem;letter-spacing:.25em;color:var(--mute)}
+                </div>
 
-@media(max-width:820px){
- section{padding:100px 0}
- .story .grid{grid-template-columns:1fr;gap:56px}
- .cards{grid-template-columns:1fr}
- .box{padding:36px 24px}
-}
-@media(prefers-reduced-motion:reduce){.card svg{animation:none}html{scroll-beh
+                <!-- Slider Controls / Dots -->
+                <div class="flex justify-center space-x-3 mt-6">
+                    <button onclick="currentSlide(0)" class="slider-dot w-8 h-1 bg-[#C5A059] transition-all"></button>
+                    <button onclick="currentSlide(1)" class="slider-dot w-3 h-1 bg-gray-300 transition-all"></button>
+                    <button onclick="currentSlide(2)" class="slider-dot w-3 h-1 bg-gray-300 transition-all"></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 2. CATEGORY-WISE HORIZONTAL SWIPEABLE PRODUCTS -->
+    <section id="categories" class="py-20 max-w-7xl mx-auto px-6">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+            <div>
+                <span class="text-[10px] uppercase tracking-[0.3em] gold-text">Curated Collections</span>
+                <h2 class="font-serif-luxury text-3xl md:text-4xl text-black mt-1">Explore by Categories</h2>
+            </div>
+            <p class="text-gray-500 text-xs max-w-xs mt-2 md:mt-0 font-light">Swipe horizontally to explore exclusive fragrance classes tailored for your persona.</p>
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="flex space-x-4 border-b border-gray-200 pb-4 mb-8 overflow-x-auto no-scrollbar">
+            <button onclick="switchCategory('men')" class="cat-btn px-6 py-2 text-xs uppercase tracking-widest bg-[#C5A059] text-white font-semibold transition-all whitespace-nowrap shadow-sm">Men's Luxury</button>
+            <button onclick="switchCategory('women')" class="cat-btn px-6 py-2 text-xs uppercase tracking-widest bg-transparent text-gray-500 hover:text-black transition-all whitespace-nowrap">Women's Ethereal</button>
+            <button onclick="switchCategory('unisex')" class="cat-btn px-6 py-2 text-xs uppercase tracking-widest bg-transparent text-gray-500 hover:text-black transition-all whitespace-nowrap">Unisex Signature</button>
+            <button onclick="switchCategory('gift')" class="cat-btn px-6 py-2 text-xs uppercase tracking-widest bg-transparent text-gray-500 hover:text-black transition-all whitespace-nowrap">Gift Sets</button>
+        </div>
+
+        <!-- Horizontal Swipeable Container -->
+        <div id="productContainer" class="relative">
+            <div id="categoryGrid" class="flex space-x-6 overflow-x-auto no-scrollbar pb-6 scroll-smooth">
+                
+                <!-- Item 1 -->
+                <div class="min-w-[280px] md:min-w-[320px] bg-[#FAFAFA] border border-gray-200 p-5 group hover:border-[#C5A059] transition-all shadow-sm">
+                    <div class="h-64 bg-white border border-gray-100 flex items-center justify-center relative mb-4">
+                        <span class="absolute top-3 left-3 text-[9px] uppercase tracking-widest text-gray-400">Extrait de Parfum</span>
+                        <div class="w-16 h-28 bg-[#F4F4F4] border border-gray-200 rounded-t-md relative flex items-center justify-center">
+                            <span class="text-[9px] gold-text font-serif-luxury rotate-[-90deg]">ROYAL OUD</span>
+                        </div>
+                    </div>
+                    <h3 class="font-serif-luxury text-lg text-black group-hover:text-[#C5A059] transition-colors">The Royal Oud</h3>
+                    <p class="text-[11px] text-gray-500 font-light mt-1">Smoky wood, leather & subtle spices.</p>
+                    <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-200">
+                        <span class="font-serif-luxury gold-text text-base font-semibold">৳ 3,800</span>
+                        <a href="#order" class="text-[10px] uppercase tracking-widest px-3 py-1.5 border gold-border gold-text hover:bg-[#C5A059] hover:text-white transition-all">Select</a>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="min-w-[280px] md:min-w-[320px] bg-[#FAFAFA] border border-gray-200 p-5 group hover:border-[#C5A059] transition-all shadow-sm">
+                    <div class="h-64 bg-white border border-gray-100 flex items-center justify-center relative mb-4">
+                        <span class="absolute top-3 left-3 text-[9px] uppercase tracking-widest text-gray-400">Eau de Parfum</span>
+                        <div class="w-16 h-28 bg-[#F4F4F4] border border-gray-200 rounded-t-md relative flex items-center justify-center">
+                            <span class="text-[9px] gold-text font-serif-luxury rotate-[-90deg]">BLACK NOIR</span>
+                        </div>
+                    </div>
+                    <h3 class="font-serif-luxury text-lg text-black group-hover:text-[#C5A059] transition-colors">Black Noir Intense</h3>
+                    <p class="text-[11px] text-gray-500 font-light mt-1">Bergamot, pepper & deep musk.</p>
+                    <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-200">
+                        <span class="font-serif-luxury gold-text text-base font-semibold">৳ 3,500</span>
+                        <a href="#order" class="text-[10px] uppercase tracking-widest px-3 py-1.5 border gold-border gold-text hover:bg-[#C5A059] hover:text-white transition-all">Select</a>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="min-w-[280px] md:min-w-[320px] bg-[#FAFAFA] border border-gray-200 p-5 group hover:border-[#C5A059] transition-all shadow-sm">
+                    <div class="h-64 bg-white border border-gray-100 flex items-center justify-center relative mb-4">
+                        <span class="absolute top-3 left-3 text-[9px] uppercase tracking-widest text-gray-400">Extrait de Parfum</span>
+                        <div class="w-16 h-28 bg-[#F4F4F4] border border-gray-200 rounded-t-md relative flex items-center justify-center">
+                            <span class="text-[9px] gold-text font-serif-luxury rotate-[-90deg]">VETIVER</span>
+                        </div>
+                    </div>
+                    <h3 class="font-serif-luxury text-lg text-black group-hover:text-[#C5A059] transition-colors">Vetiver Prestige</h3>
+                    <p class="text-[11px] text-gray-500 font-light mt-1">Earthy grass roots & clean citrus.</p>
+                    <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-200">
+                        <span class="font-serif-luxury gold-text text-base font-semibold">৳ 4,000</span>
+                        <a href="#order" class="text-[10px] uppercase tracking-widest px-3 py-1.5 border gold-border gold-text hover:bg-[#C5A059] hover:text-white transition-all">Select</a>
+                    </div>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="min-w-[280px] md:min-w-[320px] bg-[#FAFAFA] border border-gray-200 p-5 group hover:border-[#C5A059] transition-all shadow-sm">
+                    <div class="h-64 bg-white border border-gray-100 flex items-center justify-center relative mb-4">
+                        <span class="absolute top-3 left-3 text-[9px] uppercase tracking-widest text-gray-400">Eau de Parfum</span>
+                        <div class="w-16 h-28 bg-[#F4F4F4] border border-gray-200 rounded-t-md relative flex items-center justify-center">
+                            <span class="text-[9px] gold-text font-serif-luxury rotate-[-90deg]">TABAC</span>
+                        </div>
+                    </div>
+                    <h3 class="font-serif-luxury text-lg text-black group-hover:text-[#C5A059] transition-colors">Golden Tabac</h3>
+                    <p class="text-[11px] text-gray-500 font-light mt-1">Sweet tobacco leaf & vanilla bean.</p>
+                    <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-200">
+                        <span class="font-serif-luxury gold-text text-base font-semibold">৳ 4,500</span>
+                        <a href="#order" class="text-[10px] uppercase tracking-widest px-3 py-1.5 border gold-border gold-text hover:bg-[#C5A059] hover:text-white transition-all">Select</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Artistry / Notes Section -->
+    <section id="artistry" class="py-20 bg-[#F9F9F9] border-y border-gray-200">
+        <div class="max-w-5xl mx-auto px-6 text-center">
+            <span class="text-[10px] uppercase tracking-[0.3em] gold-text">Olfactory Hierarchy</span>
+            <h2 class="font-serif-luxury text-3xl md:text-4xl text-black mt-1 mb-12">The Anatomy of a Masterpiece</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+                <div class="p-6 bg-white border border-gray-200 shadow-sm">
+                    <span class="text-xs gold-text uppercase tracking-widest font-medium">01 / Opening</span>
+                    <h3 class="font-serif-luxury text-xl text-black mt-2 mb-1">Top Notes</h3>
+                    <p class="text-gray-600 text-xs font-light leading-relaxed">The immediate impression upon application. Crisp bergamot, pink pepper, and zesty citrus accords.</p>
+                </div>
+                <div class="p-6 bg-white border border-gray-200 shadow-sm">
+                    <span class="text-xs gold-text uppercase tracking-widest font-medium">02 / Heart</span>
+                    <h3 class="font-serif-luxury text-xl text-black mt-2 mb-1">Heart Notes</h3>
+                    <p class="text-gray-600 text-xs font-light leading-relaxed">Emerges as top notes fade. Deep floral bouquets, rich spices, and velvety lavender depth.</p>
+                </div>
+                <div class="p-6 bg-white border border-gray-200 shadow-sm">
+                    <span class="text-xs gold-text uppercase tracking-widest font-medium">03 / Foundation</span>
+                    <h3 class="font-serif-luxury text-xl text-black mt-2 mb-1">Base Notes</h3>
+                    <p class="text-gray-600 text-xs font-light leading-relaxed">The lingering memory. Warm amber, rich oud, white musk, and organic vanilla bean.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seamless Checkout / Order Form Section -->
+    <section id="order" class="py-24 max-w-xl mx-auto px-6">
+        <div class="text-center mb-10">
+            <span class="text-[10px] uppercase tracking-[0.3em] gold-text">Exclusive Allocation</span>
+            <h2 class="font-serif-luxury text-3xl text-black mt-1">Acquire Your Scent</h2>
+            <p class="text-gray-600 text-xs mt-2 font-light">Provide your delivery credentials below for discreet luxury packaging & cash on delivery.</p>
+        </div>
+
+        <form class="bg-[#FAFAFA] border border-gray-200 p-8 md:p-10 space-y-6 shadow-lg">
+            <div>
+                <label class="block text-[10px] uppercase tracking-widest text-gray-600 mb-2 font-medium">Selected Fragrance</label>
+                <select class="w-full bg-white border border-gray-300 text-black text-xs px-4 py-3 focus:outline-none focus:border-[#C5A059]">
+                    <option>Imperial Majesty — ৳8,500</option>
+                    <option>Noir Royale (Special Offer) — ৳4,200</option>
+                    <option>Velvet Bloom — ৳3,800</option>
+                    <option>The Royal Oud — ৳3,800</option>
+                    <option>Black Noir Intense — ৳3,500</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-[10px] uppercase tracking-widest text-gray-600 mb-2 font-medium">Your Full Name</label>
+                <input type="text" placeholder="e.g. Tanvir Ahmed" class="w-full bg-white border border-gray-300 text-black text-xs px-4 py-3 focus:outline-none focus:border-[#C5A059]" required>
+            </div>
+
+            <div>
+                <label class="block text-[10px] uppercase tracking-widest text-gray-600 mb-2 font-medium">Mobile Number</label>
+                <input type="tel" placeholder="01XXXXXXXXX" class="w-full bg-white border border-gray-300 text-black text-xs px-4 py-3 focus:outline-none focus:border-[#C5A059]" required>
+            </div>
+
+            <div>
+                <label class="block text-[10px] uppercase tracking-widest text-gray-600 mb-2 font-medium">Complete Delivery Address</label>
+                <textarea rows="3" placeholder="House/Road, Area, City" class="w-full bg-white border border-gray-300 text-black text-xs px-4 py-3 focus:outline-none focus:border-[#C5A059]" required></textarea>
+            </div>
+
+            <button type="submit" class="w-full py-4 gold-bg text-white text-xs font-semibold uppercase tracking-[0.2em] hover:opacity-90 transition-opacity mt-2 shadow-sm">
+                Confirm Order
+            </button>
+            <p class="text-[10px] text-center text-gray-500 uppercase tracking-widest mt-2">Cash on Delivery Available Across Bangladesh</p>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-10 border-t border-gray-200 text-center text-gray-500 text-xs bg-[#FAFAFA]">
+        <p class="font-serif-luxury tracking-widest text-black text-base mb-2 font-bold">PERFUME BD</p>
+        <p class="font-light">&copy; 2026 Perfume BD. All Rights Reserved. Crafted with Dior-level minimalism.</p>
+    </footer>
+
+    <!-- JavaScript for Auto-Slide & Category Switching -->
+    <script>
+        let currentSlideIndex = 0;
+        const slides = document.getElementById('heroSlider');
+        const dots = document.querySelectorAll('.slider-dot');
+        const totalSlides = 3;
+
+        function showSlide(index) {
+            currentSlideIndex = index;
+            slides.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+            dots.forEach((dot, idx) => {
+                if (idx === currentSlideIndex) {
+                    dot.classList.remove('w-3', 'bg-gray-300');
+                    dot.classList.add('w-8', 'bg-[#C5A059]');
+                } else {
+                    dot.classList.remove('w-8', 'bg-[#C5A059]');
+                    dot.classList.add('w-3', 'bg-gray-300');
+                }
+            });
+        }
+
+        function currentSlide(index) {
+            showSlide(index);
+        }
+
+        setInterval(() => {
+            currentSlideIndex = (currentSlideIndex + 1) % totalSlides;
+            showSlide(currentSlideIndex);
+        }, 4500);
+
+        const categoryData = {
+            men: [
+                { name: "The Royal Oud", note: "Smoky wood, leather & subtle spices.", price: "৳ 3,800", tag: "Extrait de Parfum" },
+                { name: "Black Noir Intense", note: "Bergamot, pepper & deep musk.", price: "৳ 3,500", tag: "Eau de Parfum" },
+                { name: "Vetiver Prestige", note: "Earthy grass roots & clean citrus.", price: "৳ 4,000", tag: "Extrait de Parfum" },
+                { name: "Golden Tabac", note: "Sweet tobacco leaf & vanilla bean.", price: "৳ 4,500", tag: "Eau de Parfum" }
+            ],
+            women: [
+                { name: "Velvet Bloom", note: "Jasmine, white florals & soft vanilla.", price: "৳ 3,800", tag: "Ethereal Floral" },
+                { name: "Elysian Rose", note: "Turkish rose, peony & amber.", price: "৳ 4,200", tag: "Extrait de Parfum" },
+                { name: "Celestial Blossom", note: "Pear blossom, white tea & musk.", price: "৳ 3,600", tag: "Eau de Parfum" }
+            ],
+            unisex: [
+                { name: "Ambre Noir", note: "Warm amber, incense & cedarwood.", price: "৳ 4,500", tag: "Signature Blend" },
+                { name: "Santal Royale", note: "Sandalwood, cardamom & violet.", price: "৳ 4,800", tag: "Private Collection" }
+            ],
+            gift: [
+                { name: "The Royal Duo Set", note: "Includes 2 travel-size luxury bottles.", price: "৳ 6,500", tag: "Gift Set" },
+                { name: "Complete Trilogy Box", note: "All 3 signature fragrances combined.", price: "৳ 11,000", tag: "Limited Box" }
+            ]
+        };
+
+        function switchCategory(category) {
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.remove('bg-[#C5A059]', 'text-white', 'font-semibold', 'shadow-sm');
+                btn.classList.add('bg-transparent', 'text-gray-500');
+            });
+            event.target.classList.remove('bg-transparent', 'text-gray-500');
+            event.target.classList.add('bg-[#C5A059]', 'text-white', 'font-semibold', 'shadow-sm');
+
+            const grid = document.getElementById('categoryGrid');
+            const items = categoryData[category] || [];
+            
+            grid.innerHTML = items.map(item => `
+                <div class="min-w-[280px] md:min-w-[320px] bg-[#FAFAFA] border border-gray-200 p-5 group hover:border-[#C5A059] transition-all shadow-sm">
+                    <div class="h-64 bg-white border border-gray-100 flex items-center justify-center relative mb-4">
+                        <span class="absolute top-3 left-3 text-[9px] uppercase tracking-widest text-gray-400">${item.tag}</span>
+                        <div class="w-16 h-28 bg-[#F4F4F4] border border-gray-200 rounded-t-md relative flex items-center justify-center">
+                            <span class="text-[9px] gold-text font-serif-luxury rotate-[-90deg]">${item.name.toUpperCase().substring(0, 10)}</span>
+                        </div>
+                    </div>
+                    <h3 class="font-serif-luxury text-lg text-black group-hover:text-[#C5A059] transition-colors">${item.name}</h3>
+                    <p class="text-[11px] text-gray-500 font-light mt-1">${item.note}</p>
+                    <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-200">
+                        <span class="font-serif-luxury gold-text text-base font-semibold">${item.price}</span>
+                        <a href="#order" class="text-[10px] uppercase tracking-widest px-3 py-1.5 border gold-border gold-text hover:bg-[#C5A059] hover:text-white transition-all">Select</a>
+                    </div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>
