@@ -176,16 +176,16 @@
 
         <!-- Category Tabs -->
         <div class="flex space-x-4 border-b border-gray-200 pb-4 mb-8 overflow-x-auto no-scrollbar">
-            <button onclick="switchCategory('men')" class="cat-btn px-6 py-2 text-xs uppercase tracking-widest bg-[#C5A059] text-white font-semibold transition-all whitespace-nowrap shadow-sm">Men's Luxury</button>
-            <button onclick="switchCategory('women')" class="cat-btn px-6 py-2 text-xs uppercase tracking-widest bg-transparent text-gray-500 hover:text-black transition-all whitespace-nowrap">Women's Ethereal</button>
-            <button onclick="switchCategory('unisex')" class="cat-btn px-6 py-2 text-xs uppercase tracking-widest bg-transparent text-gray-500 hover:text-black transition-all whitespace-nowrap">Unisex Signature</button>
-            <button onclick="switchCategory('gift')" class="cat-btn px-6 py-2 text-xs uppercase tracking-widest bg-transparent text-gray-500 hover:text-black transition-all whitespace-nowrap">Gift Sets</button>
+            <button onclick="switchCategory('men', this)" class="cat-btn px-6 py-2 text-xs uppercase tracking-widest bg-[#C5A059] text-white font-semibold transition-all whitespace-nowrap shadow-sm">Men's Luxury</button>
+            <button onclick="switchCategory('women', this)" class="cat-btn px-6 py-2 text-xs uppercase tracking-widest bg-transparent text-gray-500 hover:text-black transition-all whitespace-nowrap">Women's Ethereal</button>
+            <button onclick="switchCategory('unisex', this)" class="cat-btn px-6 py-2 text-xs uppercase tracking-widest bg-transparent text-gray-500 hover:text-black transition-all whitespace-nowrap">Unisex Signature</button>
+            <button onclick="switchCategory('gift', this)" class="cat-btn px-6 py-2 text-xs uppercase tracking-widest bg-transparent text-gray-500 hover:text-black transition-all whitespace-nowrap">Gift Sets</button>
         </div>
 
         <!-- Horizontal Swipeable Container -->
         <div id="productContainer" class="relative">
             <div id="categoryGrid" class="flex space-x-6 overflow-x-auto no-scrollbar pb-6 scroll-smooth">
-                <!-- Items injected via JS -->
+                <!-- Items injected via JS immediately on load -->
             </div>
         </div>
     </section>
@@ -570,13 +570,16 @@
             ]
         };
 
-        function switchCategory(category) {
+        function switchCategory(category, buttonElement) {
             document.querySelectorAll('.cat-btn').forEach(btn => {
                 btn.classList.remove('bg-[#C5A059]', 'text-white', 'font-semibold', 'shadow-sm');
                 btn.classList.add('bg-transparent', 'text-gray-500');
             });
-            event.target.classList.remove('bg-transparent', 'text-gray-500');
-            event.target.classList.add('bg-[#C5A059]', 'text-white', 'font-semibold', 'shadow-sm');
+            
+            if (buttonElement) {
+                buttonElement.classList.remove('bg-transparent', 'text-gray-500');
+                buttonElement.classList.add('bg-[#C5A059]', 'text-white', 'font-semibold', 'shadow-sm');
+            }
 
             const grid = document.getElementById('categoryGrid');
             const items = categoryData[category] || [];
@@ -599,8 +602,11 @@
             `).join('');
         }
 
-        // Initialize category grid on load
-        switchCategory('men');
+        // Automatically load 'men' category products on page load so it's never empty
+        window.addEventListener('DOMContentLoaded', () => {
+            const firstCatBtn = document.querySelector('.cat-btn');
+            switchCategory('men', firstCatBtn);
+        });
     </script>
 </body>
 </html>
