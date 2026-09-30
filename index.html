@@ -151,6 +151,57 @@
     </div>
 </section>
 
+<!-- 2. CATEGORIES SECTION -->
+<section id="categories" class="py-16 max-w-7xl mx-auto px-4 md:px-6 border-b border-gray-100">
+    <div class="text-center mb-10">
+        <span class="text-[10px] uppercase tracking-[0.3em] gold-text">Curated Experiences</span>
+        <h2 class="font-serif-luxury text-2xl md:text-3xl text-black mt-1">Explore By Category</h2>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+        <div onclick="filterCategory('All')" class="bg-[#FAFAFA] border border-gray-200 p-6 text-center cursor-pointer hover:border-[#B38F27] transition-all group">
+            <i class="fa-solid fa-gem gold-text text-xl mb-3 group-hover:scale-110 transition-transform"></i>
+            <h3 class="font-serif-luxury text-sm font-bold uppercase tracking-wider text-black">All Collection</h3>
+        </div>
+        <div onclick="filterCategory('Oud')" class="bg-[#FAFAFA] border border-gray-200 p-6 text-center cursor-pointer hover:border-[#B38F27] transition-all group">
+            <i class="fa-solid fa-fire gold-text text-xl mb-3 group-hover:scale-110 transition-transform"></i>
+            <h3 class="font-serif-luxury text-sm font-bold uppercase tracking-wider text-black">Royal Oud</h3>
+        </div>
+        <div onclick="filterCategory('Floral')" class="bg-[#FAFAFA] border border-gray-200 p-6 text-center cursor-pointer hover:border-[#B38F27] transition-all group">
+            <i class="fa-solid fa-spa gold-text text-xl mb-3 group-hover:scale-110 transition-transform"></i>
+            <h3 class="font-serif-luxury text-sm font-bold uppercase tracking-wider text-black">Floral Notes</h3>
+        </div>
+        <div onclick="filterCategory('Fresh')" class="bg-[#FAFAFA] border border-gray-200 p-6 text-center cursor-pointer hover:border-[#B38F27] transition-all group">
+            <i class="fa-solid fa-wind gold-text text-xl mb-3 group-hover:scale-110 transition-transform"></i>
+            <h3 class="font-serif-luxury text-sm font-bold uppercase tracking-wider text-black">Fresh Aquatic</h3>
+        </div>
+    </div>
+</section>
+
+<!-- 3. ALL PRODUCTS SECTION (Dynamic from LocalStorage/Admin Panel) -->
+<section id="all-products" class="py-20 max-w-7xl mx-auto px-4 md:px-6">
+    <div class="text-center mb-12">
+        <span class="text-[10px] uppercase tracking-[0.3em] gold-text">Catalogue</span>
+        <h2 class="font-serif-luxury text-3xl text-black mt-1">All Available Fragrances</h2>
+        <p class="text-xs text-gray-500 mt-2 font-light">Products added from your admin panel will automatically appear here.</p>
+    </div>
+
+    <!-- Dynamic Product Grid -->
+    <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <!-- Products will be injected here via JavaScript -->
+    </div>
+</section>
+
+<!-- 4. ARTISTRY SECTION -->
+<section id="artistry" class="py-20 bg-[#FAFAFA] border-y border-gray-200">
+    <div class="max-w-4xl mx-auto px-6 text-center space-y-6">
+        <span class="text-[10px] uppercase tracking-[0.3em] gold-text">Heritage & Craft</span>
+        <h2 class="font-serif-luxury text-3xl text-black">The Art of Scent Architecture</h2>
+        <p class="text-gray-600 text-xs md:text-sm font-light leading-relaxed">
+            Every bottle curated at Perfume BD undergoes a stringent maturation process. Sourced from traditional distilleries in Grasse and the Middle East, our fragrances are blended to deliver supreme longevity and sophisticated sillage.
+        </p>
+    </div>
+</section>
+
 <!-- Checkout Form Section -->
 <section id="order" class="py-24 max-w-xl mx-auto px-6">
     <div class="text-center mb-10">
@@ -188,10 +239,27 @@
     </div>
 </section>
 
-<!-- JavaScript for Cart & Slider Logic -->
+<!-- Footer -->
+<footer class="bg-black text-white py-12 text-center text-xs tracking-widest">
+    <p>&copy; 2026 PERFUME BD. ALL RIGHTS RESERVED.</p>
+</footer>
+
+<!-- JavaScript for Cart, Products Rendering & Slider Logic -->
 <script>
+    // Initial sample products if localStorage is empty
+    if (!localStorage.getItem('admin_products')) {
+        const defaultProducts = [
+            { name: "Royal Amber Oud", price: 4500, category: "Oud", desc: "Deep Arabian oud infused with sweet golden amber." },
+            { name: "Jasmine Noir", price: 3200, category: "Floral", desc: "Intense nocturnal blooming white jasmine." },
+            { name: "Ocean Breeze", price: 2800, category: "Fresh", desc: "Crisp aquatic notes with a touch of citrus." },
+            { name: "Sultan's Essence", price: 6000, category: "Oud", desc: "A regal blend fit for royal gatherings." }
+        ];
+        localStorage.setItem('admin_products', JSON.stringify(defaultProducts));
+    }
+
     // Cart State Management via LocalStorage
     let cart = JSON.parse(localStorage.getItem('perfume_cart')) || [];
+    let currentFilter = 'All';
 
     function saveCart() {
         localStorage.setItem('perfume_cart', JSON.stringify(cart));
@@ -206,7 +274,7 @@
             cart.push({ name: name, price: price, quantity: 1 });
         }
         saveCart();
-        toggleCartModal(); // Open cart drawer on adding item
+        toggleCartModal();
     }
 
     function removeFromCart(index) {
@@ -220,11 +288,9 @@
         const cartTotalPrice = document.getElementById('cartTotalPrice');
         const checkoutCartSummary = document.getElementById('checkoutCartSummary');
 
-        // Update Counter
         let totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
         cartCount.innerText = totalCount;
 
-        // Render Cart Drawer Items
         if (cart.length === 0) {
             cartItemsContainer.innerHTML = '<p class="text-gray-500 text-xs text-center py-10">Your cart is currently empty.</p>';
             if (checkoutCartSummary) checkoutCartSummary.innerHTML = '<p class="text-gray-400">Your cart is empty.</p>';
@@ -271,6 +337,49 @@
         document.getElementById('order').scrollIntoView({ behavior: 'smooth' });
     }
 
+    // Render Products from LocalStorage (Supports Admin Additions)
+    function renderProducts() {
+        const productGrid = document.getElementById('productGrid');
+        const products = JSON.parse(localStorage.getItem('admin_products')) || [];
+
+        let filteredProducts = products;
+        if (currentFilter !== 'All') {
+            filteredProducts = products.filter(p => p.category === currentFilter);
+        }
+
+        if (filteredProducts.length === 0) {
+            productGrid.innerHTML = '<p class="col-span-full text-center text-gray-400 text-xs py-10">No products found in this category.</p>';
+            return;
+        }
+
+        let html = '';
+        filteredProducts.forEach(p => {
+            html += `
+                <div class="bg-[#FAFAFA] border border-gray-200 p-6 flex flex-col justify-between hover:border-[#B38F27] transition-all shadow-sm">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-[9px] uppercase tracking-widest px-2 py-1 bg-[#B38F27]/10 gold-text border border-[#B38F27]/30">${p.category || 'General'}</span>
+                        </div>
+                        <h3 class="font-serif-luxury text-lg font-bold text-black mb-2">${p.name}</h3>
+                        <p class="text-gray-500 text-xs font-light mb-4 line-clamp-2">${p.desc || 'Luxury handcrafted fragrance with long-lasting sillage.'}</p>
+                    </div>
+                    <div>
+                        <div class="text-lg font-serif-luxury gold-text font-semibold mb-4">৳ ${p.price}</div>
+                        <button onclick="addToCart('${p.name.replace(/'/g, "\\'")}', ${p.price})" class="w-full py-3 gold-bg text-white text-[10px] font-semibold uppercase tracking-widest hover:opacity-90 transition-opacity cursor-pointer">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+        productGrid.innerHTML = html;
+    }
+
+    function filterCategory(category) {
+        currentFilter = category;
+        renderProducts();
+    }
+
     function submitOrderWhatsApp() {
         if (cart.length === 0) {
             alert('Your cart is empty!');
@@ -297,12 +406,10 @@
 
         orderText += `\n*Total Amount:* ৳${grandTotal} (Cash on Delivery)`;
 
-        // Clear cart after order
         localStorage.removeItem('perfume_cart');
         cart = [];
         updateCartUI();
 
-        // Redirect to WhatsApp
         const encodedText = encodeURIComponent(orderText);
         window.open(`https://wa.me/8801700000000?text=${encodedText}`, '_blank');
     }
@@ -337,8 +444,9 @@
         showSlide(slideIndex);
     }, 4000);
 
-    // Initial load UI
+    // Initial load UI & Products
     updateCartUI();
+    renderProducts();
 </script>
 
 </body>
