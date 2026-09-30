@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <!-- FontAwesome for Call & WhatsApp Icons -->
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
@@ -21,14 +21,15 @@
         .font-serif-luxury {
             font-family: 'Cormorant Garamond', serif;
         }
+        /* Garo / Deep Golden Palette */
         .gold-border {
-            border-color: #C5A059;
+            border-color: #B38F27;
         }
         .gold-text {
-            color: #A38038;
+            color: #B38F27;
         }
         .gold-bg {
-            background-color: #C5A059;
+            background-color: #B38F27;
         }
         .no-scrollbar::-webkit-scrollbar {
             display: none;
@@ -39,7 +40,7 @@
         }
     </style>
 </head>
-<body class="antialiased selection:bg-[#C5A059] selection:text-white">
+<body class="antialiased selection:bg-[#B38F27] selection:text-white">
 
     <!-- Navbar -->
     <header class="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md border-b border-gray-200">
@@ -49,29 +50,56 @@
             </a>
             
             <nav class="hidden md:flex items-center space-x-10 text-xs tracking-widest uppercase text-gray-600">
-                <a href="#showcase" class="hover:text-[#C5A059] transition-colors">Collection</a>
-                <a href="#categories" class="hover:text-[#C5A059] transition-colors">Categories</a>
-                <a href="#all-products" class="hover:text-[#C5A059] transition-colors">All Products</a>
-                <a href="#artistry" class="hover:text-[#C5A059] transition-colors">Artistry</a>
+                <a href="#showcase" class="hover:text-[#B38F27] transition-colors">Collection</a>
+                <a href="#categories" class="hover:text-[#B38F27] transition-colors">Categories</a>
+                <a href="#all-products" class="hover:text-[#B38F27] transition-colors">All Products</a>
+                <a href="#artistry" class="hover:text-[#B38F27] transition-colors">Artistry</a>
             </nav>
 
-            <!-- Direct Call & WhatsApp Icons + Button -->
+            <!-- Direct Call & WhatsApp Icons + Cart Trigger -->
             <div class="flex items-center space-x-3 md:space-x-4">
                 <!-- Call Icon -->
-                <a href="tel:+8801700000000" title="Call Admin" class="w-9 h-9 rounded-full border gold-border flex items-center justify-center gold-text hover:bg-[#C5A059] hover:text-white transition-all shadow-sm">
+                <a href="tel:+8801700000000" title="Call Admin" class="w-9 h-9 rounded-full border gold-border flex items-center justify-center gold-text hover:bg-[#B38F27] hover:text-white transition-all shadow-sm">
                     <i class="fa-solid fa-phone text-xs"></i>
                 </a>
                 <!-- WhatsApp Icon -->
                 <a href="https://wa.me/8801700000000?text=Hello,%20I%20want%20to%20know%20more%20about%20your%20perfumes." target="_blank" title="Chat on WhatsApp" class="w-9 h-9 rounded-full border border-green-600 flex items-center justify-center text-green-600 hover:bg-green-600 hover:text-white transition-all shadow-sm">
                     <i class="fa-brands fa-whatsapp text-sm"></i>
                 </a>
-                
-                <a href="#order" class="hidden sm:inline-block text-[10px] md:text-xs uppercase tracking-widest px-4 py-2.5 border gold-border gold-text hover:bg-[#C5A059] hover:text-white transition-all duration-300">
-                    Secure Scent
-                </a>
+                <!-- Cart Button with Counter -->
+                <button onclick="toggleCartModal()" class="relative w-9 h-9 rounded-full border gold-border flex items-center justify-center gold-text hover:bg-[#B38F27] hover:text-white transition-all shadow-sm cursor-pointer">
+                    <i class="fa-solid fa-bag-shopping text-xs"></i>
+                    <span id="cartCount" class="absolute -top-1 -right-1 bg-black text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+                </button>
             </div>
         </div>
     </header>
+
+    <!-- Cart Slide-over Drawer -->
+    <div id="cartDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div class="absolute inset-0 bg-black/50 transition-opacity" onclick="toggleCartModal()"></div>
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+                <div class="flex items-center justify-between px-6 py-5 border-b border-gray-200">
+                    <h3 class="font-serif-luxury text-xl font-bold uppercase tracking-widest text-black">Your Shopping Cart</h3>
+                    <button onclick="toggleCartModal()" class="text-gray-400 hover:text-black text-lg p-2"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-6 space-y-4">
+                    <!-- Dynamic Cart Items -->
+                    <p class="text-gray-500 text-xs text-center py-10">Your cart is currently empty.</p>
+                </div>
+                <div class="border-t border-gray-200 p-6 space-y-4 bg-[#FAFAFA]">
+                    <div class="flex justify-between items-center text-sm font-semibold">
+                        <span>Total:</span>
+                        <span id="cartTotalPrice" class="font-serif-luxury gold-text text-lg">৳ 0</span>
+                    </div>
+                    <a href="#order" onclick="toggleCartModal(); populateOrderSelection();" class="block w-full py-3.5 gold-bg text-white text-center text-xs font-semibold uppercase tracking-widest hover:opacity-90 transition-opacity">
+                        Proceed to Checkout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- 1. AUTO-SLIDE HERO SECTION -->
     <section id="showcase" class="relative pt-28 md:pt-32 pb-16 overflow-hidden border-b border-gray-100">
@@ -88,21 +116,21 @@
                     <!-- Slide 1 -->
                     <div class="min-w-full flex flex-col items-center text-center gap-6">
                         <div class="w-48 h-60 md:w-56 md:h-72 bg-white border border-gray-200 flex items-center justify-center relative shadow-md">
-                            <span class="absolute top-3 right-3 text-[9px] tracking-widest text-[#C5A059] uppercase">Limited 50pcs</span>
-                            <div class="w-16 h-28 md:w-20 md:h-36 bg-[#F4F4F4] border border-[#C5A059]/40 rounded-t-lg rounded-b-sm flex items-center justify-center shadow-inner relative">
-                                <div class="absolute -top-3 w-6 h-3 md:w-8 md:h-4 bg-[#C5A059] rounded-t-sm"></div>
+                            <span class="absolute top-3 right-3 text-[9px] tracking-widest gold-text uppercase">Limited 50pcs</span>
+                            <div class="w-16 h-28 md:w-20 md:h-36 bg-[#F4F4F4] border border-[#B38F27]/40 rounded-t-lg rounded-b-sm flex items-center justify-center shadow-inner relative">
+                                <div class="absolute -top-3 w-6 h-3 md:w-8 md:h-4 gold-bg rounded-t-sm"></div>
                                 <span class="font-serif-luxury text-[9px] md:text-[10px] gold-text tracking-widest rotate-[-90deg]">IMPERIAL</span>
                             </div>
                         </div>
                         <div class="space-y-3 max-w-lg">
-                            <span class="inline-block px-3 py-1 bg-[#C5A059]/10 gold-text text-[9px] tracking-widest uppercase border border-[#C5A059]/30">Crown Selection</span>
+                            <span class="inline-block px-3 py-1 bg-[#B38F27]/10 gold-text text-[9px] tracking-widest uppercase border border-[#B38F27]/30">Crown Selection</span>
                             <h1 class="font-serif-luxury text-3xl md:text-4xl text-black leading-tight">Imperial Majesty <span class="gold-text font-light italic text-2xl md:text-3xl block">Pure Extrait</span></h1>
                             <p class="text-gray-600 text-xs md:text-sm font-light leading-relaxed px-4">
                                 Crafted with rare white frankincense and golden amber notes. A masterpiece designed for absolute presence.
                             </p>
                             <div class="text-xl md:text-2xl font-serif-luxury gold-text font-semibold">৳ 8,500 <span class="text-xs text-gray-400 font-normal line-through ml-2">৳ 10,000</span></div>
                             <div class="pt-2">
-                                <a href="#order" class="inline-block px-8 py-3 gold-bg text-white text-xs font-semibold uppercase tracking-widest hover:opacity-90 transition-opacity">Acquire Now</a>
+                                <button onclick="addToCart('Imperial Majesty', 8500)" class="inline-block px-8 py-3 gold-bg text-white text-xs font-semibold uppercase tracking-widest hover:opacity-90 transition-opacity cursor-pointer">Add to Cart</button>
                             </div>
                         </div>
                     </div>
@@ -124,7 +152,7 @@
                             </p>
                             <div class="text-xl md:text-2xl font-serif-luxury gold-text font-semibold">৳ 4,200 <span class="text-xs text-gray-400 font-normal line-through ml-2">৳ 5,500</span></div>
                             <div class="pt-2">
-                                <a href="#order" class="inline-block px-8 py-3 gold-bg text-white text-xs font-semibold uppercase tracking-widest hover:opacity-90 transition-opacity">Claim Offer</a>
+                                <button onclick="addToCart('Noir Royale', 4200)" class="inline-block px-8 py-3 gold-bg text-white text-xs font-semibold uppercase tracking-widest hover:opacity-90 transition-opacity cursor-pointer">Add to Cart</button>
                             </div>
                         </div>
                     </div>
@@ -132,21 +160,21 @@
                     <!-- Slide 3 -->
                     <div class="min-w-full flex flex-col items-center text-center gap-6">
                         <div class="w-48 h-60 md:w-56 md:h-72 bg-white border border-gray-200 flex items-center justify-center relative shadow-md">
-                            <span class="absolute top-3 right-3 text-[9px] tracking-widest text-[#C5A059] uppercase">Trending</span>
-                            <div class="w-16 h-28 md:w-20 md:h-36 bg-[#F4F4F4] border border-[#C5A059]/40 rounded-t-lg rounded-b-sm flex items-center justify-center shadow-inner relative">
-                                <div class="absolute -top-3 w-6 h-3 md:w-8 md:h-4 bg-[#C5A059] rounded-t-sm"></div>
+                            <span class="absolute top-3 right-3 text-[9px] tracking-widest gold-text uppercase">Trending</span>
+                            <div class="w-16 h-28 md:w-20 md:h-36 bg-[#F4F4F4] border border-[#B38F27]/40 rounded-t-lg rounded-b-sm flex items-center justify-center shadow-inner relative">
+                                <div class="absolute -top-3 w-6 h-3 md:w-8 md:h-4 gold-bg rounded-t-sm"></div>
                                 <span class="font-serif-luxury text-[9px] md:text-[10px] gold-text tracking-widest rotate-[-90deg]">VELVET BLOOM</span>
                             </div>
                         </div>
                         <div class="space-y-3 max-w-lg">
-                            <span class="inline-block px-3 py-1 bg-[#C5A059]/10 gold-text text-[9px] tracking-widest uppercase border border-[#C5A059]/30">Bestseller</span>
+                            <span class="inline-block px-3 py-1 bg-[#B38F27]/10 gold-text text-[9px] tracking-widest uppercase border border-[#B38F27]/30">Bestseller</span>
                             <h1 class="font-serif-luxury text-3xl md:text-4xl text-black leading-tight">Velvet Bloom <span class="gold-text font-light italic text-2xl md:text-3xl block">Ethereal Floral</span></h1>
                             <p class="text-gray-600 text-xs md:text-sm font-light leading-relaxed px-4">
                                 Delicate notes of blooming white jasmine entwined with warm vanilla. Long-lasting elegance.
                             </p>
                             <div class="text-xl md:text-2xl font-serif-luxury gold-text font-semibold">৳ 3,800</div>
                             <div class="pt-2">
-                                <a href="#order" class="inline-block px-8 py-3 gold-bg text-white text-xs font-semibold uppercase tracking-widest hover:opacity-90 transition-opacity">Acquire Now</a>
+                                <button onclick="addToCart('Velvet Bloom', 3800)" class="inline-block px-8 py-3 gold-bg text-white text-xs font-semibold uppercase tracking-widest hover:opacity-90 transition-opacity cursor-pointer">Add to Cart</button>
                             </div>
                         </div>
                     </div>
@@ -155,7 +183,7 @@
 
                 <!-- Slider Controls / Dots -->
                 <div class="flex justify-center space-x-3 mt-6">
-                    <button onclick="currentSlide(0)" class="slider-dot w-8 h-1 bg-[#C5A059] transition-all"></button>
+                    <button onclick="currentSlide(0)" class="slider-dot w-8 h-1 gold-bg transition-all"></button>
                     <button onclick="currentSlide(1)" class="slider-dot w-3 h-1 bg-gray-300 transition-all"></button>
                     <button onclick="currentSlide(2)" class="slider-dot w-3 h-1 bg-gray-300 transition-all"></button>
                 </div>
@@ -176,10 +204,10 @@
 
         <!-- Category Tabs -->
         <div class="flex space-x-4 border-b border-gray-200 pb-4 mb-8 overflow-x-auto no-scrollbar">
-            <button onclick="switchCategory('men', this)" class="cat-btn px-6 py-2 text-xs uppercase tracking-widest bg-[#C5A059] text-white font-semibold transition-all whitespace-nowrap shadow-sm">Men's Luxury</button>
-            <button onclick="switchCategory('women', this)" class="cat-btn px-6 py-2 text-xs uppercase tracking-widest bg-transparent text-gray-500 hover:text-black transition-all whitespace-nowrap">Women's Ethereal</button>
-            <button onclick="switchCategory('unisex', this)" class="cat-btn px-6 py-2 text-xs uppercase tracking-widest bg-transparent text-gray-500 hover:text-black transition-all whitespace-nowrap">Unisex Signature</button>
-            <button onclick="switchCategory('gift', this)" class="cat-btn px-6 py-2 text-xs uppercase tracking-widest bg-transparent text-gray-500 hover:text-black transition-all whitespace-nowrap">Gift Sets</button>
+            <button onclick="switchCategory('men', this)" class="cat-btn px-6 py-2 text-xs uppercase tracking-widest gold-bg text-white font-semibold transition-all whitespace-nowrap shadow-sm cursor-pointer">Men's Luxury</button>
+            <button onclick="switchCategory('women', this)" class="cat-btn px-6 py-2 text-xs uppercase tracking-widest bg-transparent text-gray-500 hover:text-black transition-all whitespace-nowrap cursor-pointer">Women's Ethereal</button>
+            <button onclick="switchCategory('unisex', this)" class="cat-btn px-6 py-2 text-xs uppercase tracking-widest bg-transparent text-gray-500 hover:text-black transition-all whitespace-nowrap cursor-pointer">Unisex Signature</button>
+            <button onclick="switchCategory('gift', this)" class="cat-btn px-6 py-2 text-xs uppercase tracking-widest bg-transparent text-gray-500 hover:text-black transition-all whitespace-nowrap cursor-pointer">Gift Sets</button>
         </div>
 
         <!-- Horizontal Swipeable Container -->
@@ -191,7 +219,7 @@
     </section>
 
 
-    <!-- 3. NEW: PERFUME BD ALL PRODUCTS (Price Range Wise Rows) -->
+    <!-- 3. PERFUME BD ALL PRODUCTS -->
     <section id="all-products" class="py-20 bg-[#FAFAFA] border-t border-gray-200">
         <div class="max-w-7xl mx-auto px-6 mb-12 text-center">
             <span class="text-[10px] uppercase tracking-[0.3em] gold-text">Complete Catalog</span>
@@ -210,66 +238,65 @@
                     </h3>
                     <span class="text-[10px] uppercase tracking-widest gold-text font-medium">18 Items</span>
                 </div>
-                <!-- Swipeable Line -->
                 <div class="flex space-x-5 overflow-x-auto no-scrollbar pb-4 scroll-smooth">
                     <!-- Item 1 -->
-                    <div class="min-w-[240px] md:min-w-[280px] bg-white border border-gray-200 p-4 group hover:border-[#C5A059] transition-all shadow-sm">
+                    <div class="min-w-[240px] md:min-w-[280px] bg-white border border-gray-200 p-4 group hover:border-[#B38F27] transition-all shadow-sm">
                         <div class="h-48 bg-[#F9F9F9] border border-gray-100 flex items-center justify-center relative mb-3">
                             <span class="absolute top-2 left-2 text-[8px] uppercase tracking-widest text-gray-400">Pocket Spray</span>
                             <div class="w-10 h-20 bg-gray-200 rounded-sm flex items-center justify-center">
                                 <span class="text-[8px] text-gray-600 rotate-[-90deg]">MINI 10ML</span>
                             </div>
                         </div>
-                        <h4 class="font-serif-luxury text-base text-black group-hover:text-[#C5A059]">Royal Pocket Mini</h4>
+                        <h4 class="font-serif-luxury text-base text-black group-hover:text-[#B38F27]">Royal Pocket Mini</h4>
                         <p class="text-[10px] text-gray-500 font-light mt-0.5">Fresh aquatic notes & citrus.</p>
                         <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
                             <span class="font-serif-luxury gold-text font-semibold text-sm">৳ 250</span>
-                            <a href="#order" class="text-[9px] uppercase tracking-widest px-2.5 py-1 border gold-border gold-text hover:bg-[#C5A059] hover:text-white">Select</a>
+                            <button onclick="addToCart('Royal Pocket Mini', 250)" class="text-[9px] uppercase tracking-widest px-2.5 py-1 border gold-border gold-text hover:bg-[#B38F27] hover:text-white cursor-pointer transition-all">Add to Cart</button>
                         </div>
                     </div>
                     <!-- Item 2 -->
-                    <div class="min-w-[240px] md:min-w-[280px] bg-white border border-gray-200 p-4 group hover:border-[#C5A059] transition-all shadow-sm">
+                    <div class="min-w-[240px] md:min-w-[280px] bg-white border border-gray-200 p-4 group hover:border-[#B38F27] transition-all shadow-sm">
                         <div class="h-48 bg-[#F9F9F9] border border-gray-100 flex items-center justify-center relative mb-3">
                             <span class="absolute top-2 left-2 text-[8px] uppercase tracking-widest text-gray-400">Pocket Spray</span>
                             <div class="w-10 h-20 bg-gray-200 rounded-sm flex items-center justify-center">
                                 <span class="text-[8px] text-gray-600 rotate-[-90deg]">MINI 10ML</span>
                             </div>
                         </div>
-                        <h4 class="font-serif-luxury text-base text-black group-hover:text-[#C5A059]">Blue Water Travel</h4>
+                        <h4 class="font-serif-luxury text-base text-black group-hover:text-[#B38F27]">Blue Water Travel</h4>
                         <p class="text-[10px] text-gray-500 font-light mt-0.5">Ocean breeze & sea salt.</p>
                         <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
                             <span class="font-serif-luxury gold-text font-semibold text-sm">৳ 350</span>
-                            <a href="#order" class="text-[9px] uppercase tracking-widest px-2.5 py-1 border gold-border gold-text hover:bg-[#C5A059] hover:text-white">Select</a>
+                            <button onclick="addToCart('Blue Water Travel', 350)" class="text-[9px] uppercase tracking-widest px-2.5 py-1 border gold-border gold-text hover:bg-[#B38F27] hover:text-white cursor-pointer transition-all">Add to Cart</button>
                         </div>
                     </div>
                     <!-- Item 3 -->
-                    <div class="min-w-[240px] md:min-w-[280px] bg-white border border-gray-200 p-4 group hover:border-[#C5A059] transition-all shadow-sm">
+                    <div class="min-w-[240px] md:min-w-[280px] bg-white border border-gray-200 p-4 group hover:border-[#B38F27] transition-all shadow-sm">
                         <div class="h-48 bg-[#F9F9F9] border border-gray-100 flex items-center justify-center relative mb-3">
                             <span class="absolute top-2 left-2 text-[8px] uppercase tracking-widest text-gray-400">Roll-On Oil</span>
                             <div class="w-10 h-20 bg-gray-200 rounded-sm flex items-center justify-center">
                                 <span class="text-[8px] text-gray-600 rotate-[-90deg]">ATTAR 6ML</span>
                             </div>
                         </div>
-                        <h4 class="font-serif-luxury text-base text-black group-hover:text-[#C5A059]">Sultan Attar Pure</h4>
+                        <h4 class="font-serif-luxury text-base text-black group-hover:text-[#B38F27]">Sultan Attar Pure</h4>
                         <p class="text-[10px] text-gray-500 font-light mt-0.5">Alcohol-free concentrated musk.</p>
                         <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
                             <span class="font-serif-luxury gold-text font-semibold text-sm">৳ 450</span>
-                            <a href="#order" class="text-[9px] uppercase tracking-widest px-2.5 py-1 border gold-border gold-text hover:bg-[#C5A059] hover:text-white">Select</a>
+                            <button onclick="addToCart('Sultan Attar Pure', 450)" class="text-[9px] uppercase tracking-widest px-2.5 py-1 border gold-border gold-text hover:bg-[#B38F27] hover:text-white cursor-pointer transition-all">Add to Cart</button>
                         </div>
                     </div>
                     <!-- Item 4 -->
-                    <div class="min-w-[240px] md:min-w-[280px] bg-white border border-gray-200 p-4 group hover:border-[#C5A059] transition-all shadow-sm">
+                    <div class="min-w-[240px] md:min-w-[280px] bg-white border border-gray-200 p-4 group hover:border-[#B38F27] transition-all shadow-sm">
                         <div class="h-48 bg-[#F9F9F9] border border-gray-100 flex items-center justify-center relative mb-3">
                             <span class="absolute top-2 left-2 text-[8px] uppercase tracking-widest text-gray-400">Pocket Spray</span>
                             <div class="w-10 h-20 bg-gray-200 rounded-sm flex items-center justify-center">
                                 <span class="text-[8px] text-gray-600 rotate-[-90deg]">MINI 15ML</span>
                             </div>
                         </div>
-                        <h4 class="font-serif-luxury text-base text-black group-hover:text-[#C5A059]">Vanilla Dream Mini</h4>
+                        <h4 class="font-serif-luxury text-base text-black group-hover:text-[#B38F27]">Vanilla Dream Mini</h4>
                         <p class="text-[10px] text-gray-500 font-light mt-0.5">Sweet vanilla & light caramel.</p>
                         <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
                             <span class="font-serif-luxury gold-text font-semibold text-sm">৳ 490</span>
-                            <a href="#order" class="text-[9px] uppercase tracking-widest px-2.5 py-1 border gold-border gold-text hover:bg-[#C5A059] hover:text-white">Select</a>
+                            <button onclick="addToCart('Vanilla Dream Mini', 490)" class="text-[9px] uppercase tracking-widest px-2.5 py-1 border gold-border gold-text hover:bg-[#B38F27] hover:text-white cursor-pointer transition-all">Add to Cart</button>
                         </div>
                     </div>
                 </div>
@@ -283,51 +310,50 @@
                     </h3>
                     <span class="text-[10px] uppercase tracking-widest gold-text font-medium">24 Items</span>
                 </div>
-                <!-- Swipeable Line -->
                 <div class="flex space-x-5 overflow-x-auto no-scrollbar pb-4 scroll-smooth">
                     <!-- Item 1 -->
-                    <div class="min-w-[240px] md:min-w-[280px] bg-white border border-gray-200 p-4 group hover:border-[#C5A059] transition-all shadow-sm">
+                    <div class="min-w-[240px] md:min-w-[280px] bg-white border border-gray-200 p-4 group hover:border-[#B38F27] transition-all shadow-sm">
                         <div class="h-48 bg-[#F9F9F9] border border-gray-100 flex items-center justify-center relative mb-3">
                             <span class="absolute top-2 left-2 text-[8px] uppercase tracking-widest text-gray-400">EDT 50ml</span>
                             <div class="w-12 h-24 bg-gray-200 rounded-t-md flex items-center justify-center">
                                 <span class="text-[8px] text-gray-600 rotate-[-90deg]">AURA</span>
                             </div>
                         </div>
-                        <h4 class="font-serif-luxury text-base text-black group-hover:text-[#C5A059]">Aura Fresh 50ml</h4>
+                        <h4 class="font-serif-luxury text-base text-black group-hover:text-[#B38F27]">Aura Fresh 50ml</h4>
                         <p class="text-[10px] text-gray-500 font-light mt-0.5">Green apple, mint & cedar.</p>
                         <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
                             <span class="font-serif-luxury gold-text font-semibold text-sm">৳ 650</span>
-                            <a href="#order" class="text-[9px] uppercase tracking-widest px-2.5 py-1 border gold-border gold-text hover:bg-[#C5A059] hover:text-white">Select</a>
+                            <button onclick="addToCart('Aura Fresh 50ml', 650)" class="text-[9px] uppercase tracking-widest px-2.5 py-1 border gold-border gold-text hover:bg-[#B38F27] hover:text-white cursor-pointer transition-all">Add to Cart</button>
                         </div>
                     </div>
                     <!-- Item 2 -->
-                    <div class="min-w-[240px] md:min-w-[280px] bg-white border border-gray-200 p-4 group hover:border-[#C5A059] transition-all shadow-sm">
+                    <div class="min-w-[240px] md:min-w-[280px] bg-white border border-gray-200 p-4 group hover:border-[#B38F27] transition-all shadow-sm">
                         <div class="h-48 bg-[#F9F9F9] border border-gray-100 flex items-center justify-center relative mb-3">
                             <span class="absolute top-2 left-2 text-[8px] uppercase tracking-widest text-gray-400">EDP 50ml</span>
                             <div class="w-12 h-24 bg-gray-200 rounded-t-md flex items-center justify-center">
                                 <span class="text-[8px] text-gray-600 rotate-[-90deg]">FLORA</span>
                             </div>
                         </div>
-                        <h4 class="font-serif-luxury text-base text-black group-hover:text-[#C5A059]">Spring Blossom</h4>
+                        <h4 class="font-serif-luxury text-base text-black group-hover:text-[#B38F27]">Spring Blossom</h4>
                         <p class="text-[10px] text-gray-500 font-light mt-0.5">White lily & soft peach.</p>
                         <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
                             <span class="font-serif-luxury gold-text font-semibold text-sm">৳ 780</span>
-                            <a href="#order" class="text-[9px] uppercase tracking-widest px-2.5 py-1 border gold-border gold-text hover:bg-[#C5A059] hover:text-white">Select</a>
+                            <button onclick="addToCart('Spring Blossom', 780)" class="text-[9px] uppercase tracking-widest px-2.5 py-1 border gold-border gold-text hover:bg-[#B38F27] hover:text-white cursor-pointer transition-all">Add to Cart</button>
                         </div>
                     </div>
                     <!-- Item 3 -->
-                    <div class="min-w-[240px] md:min-w-[280px] bg-white border border-gray-200 p-4 group hover:border-[#C5A059] transition-all shadow-sm">
+                    <div class="min-w-[240px] md:min-w-[280px] bg-white border border-gray-200 p-4 group hover:border-[#B38F27] transition-all shadow-sm">
                         <div class="h-48 bg-[#F9F9F9] border border-gray-100 flex items-center justify-center relative mb-3">
                             <span class="absolute top-2 left-2 text-[8px] uppercase tracking-widest text-gray-400">EDT 100ml</span>
                             <div class="w-12 h-24 bg-gray-200 rounded-t-md flex items-center justify-center">
                                 <span class="text-[8px] text-gray-600 rotate-[-90deg]">SPORT</span>
                             </div>
                         </div>
-                        <h4 class="font-serif-luxury text-base text-black group-hover:text-[#C5A059]">Urban Sport Elite</h4>
+                        <h4 class="font-serif-luxury text-base text-black group-hover:text-[#B38F27]">Urban Sport Elite</h4>
                         <p class="text-[10px] text-gray-500 font-light mt-0.5">Grapefruit, pepper & amber.</p>
                         <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
                             <span class="font-serif-luxury gold-text font-semibold text-sm">৳ 950</span>
-                            <a href="#order" class="text-[9px] uppercase tracking-widest px-2.5 py-1 border gold-border gold-text hover:bg-[#C5A059] hover:text-white">Select</a>
+                            <button onclick="addToCart('Urban Sport Elite', 950)" class="text-[9px] uppercase tracking-widest px-2.5 py-1 border gold-border gold-text hover:bg-[#B38F27] hover:text-white cursor-pointer transition-all">Add to Cart</button>
                         </div>
                     </div>
                 </div>
@@ -341,57 +367,56 @@
                     </h3>
                     <span class="text-[10px] uppercase tracking-widest gold-text font-medium">18 Items</span>
                 </div>
-                <!-- Swipeable Line -->
                 <div class="flex space-x-5 overflow-x-auto no-scrollbar pb-4 scroll-smooth">
                     <!-- Item 1 -->
-                    <div class="min-w-[240px] md:min-w-[280px] bg-white border border-gray-200 p-4 group hover:border-[#C5A059] transition-all shadow-sm">
+                    <div class="min-w-[240px] md:min-w-[280px] bg-white border border-gray-200 p-4 group hover:border-[#B38F27] transition-all shadow-sm">
                         <div class="h-48 bg-[#F9F9F9] border border-gray-100 flex items-center justify-center relative mb-3">
                             <span class="absolute top-2 left-2 text-[8px] uppercase tracking-widest text-gray-400">EDP 100ml</span>
                             <div class="w-14 h-26 bg-gray-200 rounded-t-md flex items-center justify-center">
                                 <span class="text-[8px] text-gray-600 rotate-[-90deg]">MYSTIC</span>
                             </div>
                         </div>
-                        <h4 class="font-serif-luxury text-base text-black group-hover:text-[#C5A059]">Mystic Amber 100ml</h4>
+                        <h4 class="font-serif-luxury text-base text-black group-hover:text-[#B38F27]">Mystic Amber 100ml</h4>
                         <p class="text-[10px] text-gray-500 font-light mt-0.5">Golden amber & smoky wood.</p>
                         <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
                             <span class="font-serif-luxury gold-text font-semibold text-sm">৳ 1,450</span>
-                            <a href="#order" class="text-[9px] uppercase tracking-widest px-2.5 py-1 border gold-border gold-text hover:bg-[#C5A059] hover:text-white">Select</a>
+                            <button onclick="addToCart('Mystic Amber 100ml', 1450)" class="text-[9px] uppercase tracking-widest px-2.5 py-1 border gold-border gold-text hover:bg-[#B38F27] hover:text-white cursor-pointer transition-all">Add to Cart</button>
                         </div>
                     </div>
                     <!-- Item 2 -->
-                    <div class="min-w-[240px] md:min-w-[280px] bg-white border border-gray-200 p-4 group hover:border-[#C5A059] transition-all shadow-sm">
+                    <div class="min-w-[240px] md:min-w-[280px] bg-white border border-gray-200 p-4 group hover:border-[#B38F27] transition-all shadow-sm">
                         <div class="h-48 bg-[#F9F9F9] border border-gray-100 flex items-center justify-center relative mb-3">
                             <span class="absolute top-2 left-2 text-[8px] uppercase tracking-widest text-gray-400">EDP 100ml</span>
                             <div class="w-14 h-26 bg-gray-200 rounded-t-md flex items-center justify-center">
                                 <span class="text-[8px] text-gray-600 rotate-[-90deg]">LAVENDER</span>
                             </div>
                         </div>
-                        <h4 class="font-serif-luxury text-base text-black group-hover:text-[#C5A059]">French Lavender Noir</h4>
+                        <h4 class="font-serif-luxury text-base text-black group-hover:text-[#B38F27]">French Lavender Noir</h4>
                         <p class="text-[10px] text-gray-500 font-light mt-0.5">French lavender & dark musk.</p>
                         <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
                             <span class="font-serif-luxury gold-text font-semibold text-sm">৳ 2,200</span>
-                            <a href="#order" class="text-[9px] uppercase tracking-widest px-2.5 py-1 border gold-border gold-text hover:bg-[#C5A059] hover:text-white">Select</a>
+                            <button onclick="addToCart('French Lavender Noir', 2200)" class="text-[9px] uppercase tracking-widest px-2.5 py-1 border gold-border gold-text hover:bg-[#B38F27] hover:text-white cursor-pointer transition-all">Add to Cart</button>
                         </div>
                     </div>
                     <!-- Item 3 -->
-                    <div class="min-w-[240px] md:min-w-[280px] bg-white border border-gray-200 p-4 group hover:border-[#C5A059] transition-all shadow-sm">
+                    <div class="min-w-[240px] md:min-w-[280px] bg-white border border-gray-200 p-4 group hover:border-[#B38F27] transition-all shadow-sm">
                         <div class="h-48 bg-[#F9F9F9] border border-gray-100 flex items-center justify-center relative mb-3">
                             <span class="absolute top-2 left-2 text-[8px] uppercase tracking-widest text-gray-400">Parfum 75ml</span>
                             <div class="w-14 h-26 bg-gray-200 rounded-t-md flex items-center justify-center">
                                 <span class="text-[8px] text-gray-600 rotate-[-90deg]">OUD WOOD</span>
                             </div>
                         </div>
-                        <h4 class="font-serif-luxury text-base text-black group-hover:text-[#C5A059]">Oud Al Sultan</h4>
+                        <h4 class="font-serif-luxury text-base text-black group-hover:text-[#B38F27]">Oud Al Sultan</h4>
                         <p class="text-[10px] text-gray-500 font-light mt-0.5">Rich Arabian oud & saffron.</p>
                         <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
                             <span class="font-serif-luxury gold-text font-semibold text-sm">৳ 2,850</span>
-                            <a href="#order" class="text-[9px] uppercase tracking-widest px-2.5 py-1 border gold-border gold-text hover:bg-[#C5A059] hover:text-white">Select</a>
+                            <button onclick="addToCart('Oud Al Sultan', 2850)" class="text-[9px] uppercase tracking-widest px-2.5 py-1 border gold-border gold-text hover:bg-[#B38F27] hover:text-white cursor-pointer transition-all">Add to Cart</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Row 4: ৳3,000+ (Luxury & Masterpieces) -->
+            <!-- Row 4: ৳3,000+ -->
             <div>
                 <div class="flex items-center justify-between mb-6 border-b border-gray-200 pb-3">
                     <h3 class="font-serif-luxury text-xl text-black font-semibold flex items-center gap-2">
@@ -399,36 +424,35 @@
                     </h3>
                     <span class="text-[10px] uppercase tracking-widest gold-text font-medium">12 Items</span>
                 </div>
-                <!-- Swipeable Line -->
                 <div class="flex space-x-5 overflow-x-auto no-scrollbar pb-4 scroll-smooth">
                     <!-- Item 1 -->
-                    <div class="min-w-[240px] md:min-w-[280px] bg-white border border-gray-200 p-4 group hover:border-[#C5A059] transition-all shadow-sm">
+                    <div class="min-w-[240px] md:min-w-[280px] bg-white border border-gray-200 p-4 group hover:border-[#B38F27] transition-all shadow-sm">
                         <div class="h-48 bg-[#F9F9F9] border border-gray-100 flex items-center justify-center relative mb-3">
-                            <span class="absolute top-2 left-2 text-[8px] uppercase tracking-widest text-[#C5A059]">Extrait</span>
-                            <div class="w-14 h-26 bg-[#F4F4F4] border border-[#C5A059]/40 rounded-t-md flex items-center justify-center">
+                            <span class="absolute top-2 left-2 text-[8px] uppercase tracking-widest gold-text">Extrait</span>
+                            <div class="w-14 h-26 bg-[#F4F4F4] border border-[#B38F27]/40 rounded-t-md flex items-center justify-center">
                                 <span class="text-[8px] gold-text rotate-[-90deg]">ROYAL OUD</span>
                             </div>
                         </div>
-                        <h4 class="font-serif-luxury text-base text-black group-hover:text-[#C5A059]">The Royal Oud</h4>
+                        <h4 class="font-serif-luxury text-base text-black group-hover:text-[#B38F27]">The Royal Oud</h4>
                         <p class="text-[10px] text-gray-500 font-light mt-0.5">Smoky wood, leather & spices.</p>
                         <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
                             <span class="font-serif-luxury gold-text font-semibold text-sm">৳ 3,800</span>
-                            <a href="#order" class="text-[9px] uppercase tracking-widest px-2.5 py-1 border gold-border gold-text hover:bg-[#C5A059] hover:text-white">Select</a>
+                            <button onclick="addToCart('The Royal Oud', 3800)" class="text-[9px] uppercase tracking-widest px-2.5 py-1 border gold-border gold-text hover:bg-[#B38F27] hover:text-white cursor-pointer transition-all">Add to Cart</button>
                         </div>
                     </div>
                     <!-- Item 2 -->
-                    <div class="min-w-[240px] md:min-w-[280px] bg-white border border-gray-200 p-4 group hover:border-[#C5A059] transition-all shadow-sm">
+                    <div class="min-w-[240px] md:min-w-[280px] bg-white border border-gray-200 p-4 group hover:border-[#B38F27] transition-all shadow-sm">
                         <div class="h-48 bg-[#F9F9F9] border border-gray-100 flex items-center justify-center relative mb-3">
-                            <span class="absolute top-2 left-2 text-[8px] uppercase tracking-widest text-[#C5A059]">Extrait</span>
-                            <div class="w-14 h-26 bg-[#F4F4F4] border border-[#C5A059]/40 rounded-t-md flex items-center justify-center">
+                            <span class="absolute top-2 left-2 text-[8px] uppercase tracking-widest gold-text">Extrait</span>
+                            <div class="w-14 h-26 bg-[#F4F4F4] border border-[#B38F27]/40 rounded-t-md flex items-center justify-center">
                                 <span class="text-[8px] gold-text rotate-[-90deg]">IMPERIAL</span>
                             </div>
                         </div>
-                        <h4 class="font-serif-luxury text-base text-black group-hover:text-[#C5A059]">Imperial Majesty</h4>
+                        <h4 class="font-serif-luxury text-base text-black group-hover:text-[#B38F27]">Imperial Majesty</h4>
                         <p class="text-[10px] text-gray-500 font-light mt-0.5">White frankincense & amber.</p>
                         <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
                             <span class="font-serif-luxury gold-text font-semibold text-sm">৳ 8,500</span>
-                            <a href="#order" class="text-[9px] uppercase tracking-widest px-2.5 py-1 border gold-border gold-text hover:bg-[#C5A059] hover:text-white">Select</a>
+                            <button onclick="addToCart('Imperial Majesty', 8500)" class="text-[9px] uppercase tracking-widest px-2.5 py-1 border gold-border gold-text hover:bg-[#B38F27] hover:text-white cursor-pointer transition-all">Add to Cart</button>
                         </div>
                     </div>
                 </div>
@@ -437,8 +461,7 @@
         </div>
     </section>
 
-
-    <!-- Artistry / Notes Section -->
+    <!-- Artistry Section -->
     <section id="artistry" class="py-20 bg-white border-y border-gray-200">
         <div class="max-w-5xl mx-auto px-6 text-center">
             <span class="text-[10px] uppercase tracking-[0.3em] gold-text">Olfactory Hierarchy</span>
@@ -464,7 +487,7 @@
         </div>
     </section>
 
-    <!-- Seamless Checkout / Order Form Section -->
+    <!-- Checkout Form Section -->
     <section id="order" class="py-24 max-w-xl mx-auto px-6">
         <div class="text-center mb-10">
             <span class="text-[10px] uppercase tracking-[0.3em] gold-text">Exclusive Allocation</span>
@@ -474,8 +497,8 @@
 
         <form class="bg-[#FAFAFA] border border-gray-200 p-8 md:p-10 space-y-6 shadow-lg">
             <div>
-                <label class="block text-[10px] uppercase tracking-widest text-gray-600 mb-2 font-medium">Selected Fragrance</label>
-                <select class="w-full bg-white border border-gray-300 text-black text-xs px-4 py-3 focus:outline-none focus:border-[#C5A059]">
+                <label class="block text-[10px] uppercase tracking-widest text-gray-600 mb-2 font-medium">Selected Fragrance (From Cart)</label>
+                <select id="orderProductSelect" class="w-full bg-white border border-gray-300 text-black text-xs px-4 py-3 focus:outline-none focus:border-[#B38F27]">
                     <option>Imperial Majesty — ৳8,500</option>
                     <option>The Royal Oud — ৳3,800</option>
                     <option>Oud Al Sultan — ৳2,850</option>
@@ -492,20 +515,20 @@
 
             <div>
                 <label class="block text-[10px] uppercase tracking-widest text-gray-600 mb-2 font-medium">Your Full Name</label>
-                <input type="text" placeholder="e.g. Tanvir Ahmed" class="w-full bg-white border border-gray-300 text-black text-xs px-4 py-3 focus:outline-none focus:border-[#C5A059]" required>
+                <input type="text" placeholder="e.g. Tanvir Ahmed" class="w-full bg-white border border-gray-300 text-black text-xs px-4 py-3 focus:outline-none focus:border-[#B38F27]" required>
             </div>
 
             <div>
                 <label class="block text-[10px] uppercase tracking-widest text-gray-600 mb-2 font-medium">Mobile Number</label>
-                <input type="tel" placeholder="01XXXXXXXXX" class="w-full bg-white border border-gray-300 text-black text-xs px-4 py-3 focus:outline-none focus:border-[#C5A059]" required>
+                <input type="tel" placeholder="01XXXXXXXXX" class="w-full bg-white border border-gray-300 text-black text-xs px-4 py-3 focus:outline-none focus:border-[#B38F27]" required>
             </div>
 
             <div>
                 <label class="block text-[10px] uppercase tracking-widest text-gray-600 mb-2 font-medium">Complete Delivery Address</label>
-                <textarea rows="3" placeholder="House/Road, Area, City" class="w-full bg-white border border-gray-300 text-black text-xs px-4 py-3 focus:outline-none focus:border-[#C5A059]" required></textarea>
+                <textarea rows="3" placeholder="House/Road, Area, City" class="w-full bg-white border border-gray-300 text-black text-xs px-4 py-3 focus:outline-none focus:border-[#B38F27]" required></textarea>
             </div>
 
-            <button type="submit" class="w-full py-4 gold-bg text-white text-xs font-semibold uppercase tracking-[0.2em] hover:opacity-90 transition-opacity mt-2 shadow-sm">
+            <button type="submit" class="w-full py-4 gold-bg text-white text-xs font-semibold uppercase tracking-[0.2em] hover:opacity-90 transition-opacity mt-2 shadow-sm cursor-pointer">
                 Confirm Order
             </button>
             <p class="text-[10px] text-center text-gray-500 uppercase tracking-widest mt-2">Cash on Delivery Available Across Bangladesh</p>
@@ -514,12 +537,86 @@
 
     <!-- Footer -->
     <footer class="py-10 border-t border-gray-200 text-center text-gray-500 text-xs bg-[#FAFAFA]">
-        <p class="font-serif-luxury tracking-widest text-black text-base mb-2 font-bold">PERFUME BD</p>
+        <p class="font-serif-luxury tracking-widest text-black text-base mb-2 font-bold">PERFUME <span class="gold-text">BD</span></p>
         <p class="font-light">&copy; 2026 Perfume BD. All Rights Reserved. Crafted with Dior-level minimalism.</p>
     </footer>
 
-    <!-- JavaScript for Auto-Slide & Category Switching -->
+    <!-- JavaScript for Cart & Category Functionality -->
     <script>
+        let cart = [];
+
+        function addToCart(name, price) {
+            const existingItem = cart.find(item => item.name === name);
+            if (existingItem) {
+                existingItem.qty += 1;
+            } else {
+                cart.push({ name, price, qty: 1 });
+            }
+            updateCartUI();
+            
+            // Visual feedback
+            const notification = document.createElement('div');
+            notification.className = 'fixed bottom-5 right-5 bg-black text-white text-[10px] tracking-widest uppercase px-4 py-3 shadow-xl z-50 border border-[#B38F27] transition-all';
+            notification.innerText = `${name} added to cart`;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 2000);
+        }
+
+        function removeFromCart(name) {
+            cart = cart.filter(item => item.name !== name);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const countEl = document.getElementById('cartCount');
+            const container = document.getElementById('cartItemsContainer');
+            const totalEl = document.getElementById('cartTotalPrice');
+
+            const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            countEl.innerText = totalCount;
+            totalEl.innerText = `৳ ${totalPrice.toLocaleString()}`;
+
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-gray-500 text-xs text-center py-10 font-light">Your cart is currently empty.</p>`;
+                return;
+            }
+
+            container.innerHTML = cart.map(item => `
+                <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                    <div>
+                        <h4 class="font-serif-luxury text-sm font-semibold text-black">${item.name}</h4>
+                        <p class="text-[10px] text-gray-500">৳ ${item.price} × ${item.qty}</p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <span class="font-serif-luxury gold-text font-semibold text-sm">৳ ${item.price * item.qty}</span>
+                        <button onclick="removeFromCart('${item.name}')" class="text-gray-400 hover:text-red-500 text-xs"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleCartModal() {
+            const drawer = document.getElementById('cartDrawer');
+            drawer.classList.toggle('hidden');
+        }
+
+        function populateOrderSelection() {
+            if (cart.length > 0) {
+                const select = document.getElementById('orderProductSelect');
+                const lastItem = cart[cart.length - 1];
+                let optionExists = false;
+                for(let i=0; i<select.options.length; i++) {
+                    if(select.options[i].text.includes(lastItem.name)) {
+                        select.selectedIndex = i;
+                        optionExists = true;
+                        break;
+                    }
+                }
+            }
+        }
+
         let currentSlideIndex = 0;
         const slides = document.getElementById('heroSlider');
         const dots = document.querySelectorAll('.slider-dot');
@@ -531,9 +628,9 @@
             dots.forEach((dot, idx) => {
                 if (idx === currentSlideIndex) {
                     dot.classList.remove('w-3', 'bg-gray-300');
-                    dot.classList.add('w-8', 'bg-[#C5A059]');
+                    dot.classList.add('w-8', 'gold-bg');
                 } else {
-                    dot.classList.remove('w-8', 'bg-[#C5A059]');
+                    dot.classList.remove('w-8', 'gold-bg');
                     dot.classList.add('w-3', 'bg-gray-300');
                 }
             });
@@ -572,37 +669,36 @@
 
         function switchCategory(category, buttonElement) {
             document.querySelectorAll('.cat-btn').forEach(btn => {
-                btn.classList.remove('bg-[#C5A059]', 'text-white', 'font-semibold', 'shadow-sm');
+                btn.classList.remove('gold-bg', 'text-white', 'font-semibold', 'shadow-sm');
                 btn.classList.add('bg-transparent', 'text-gray-500');
             });
             
             if (buttonElement) {
                 buttonElement.classList.remove('bg-transparent', 'text-gray-500');
-                buttonElement.classList.add('bg-[#C5A059]', 'text-white', 'font-semibold', 'shadow-sm');
+                buttonElement.classList.add('gold-bg', 'text-white', 'font-semibold', 'shadow-sm');
             }
 
             const grid = document.getElementById('categoryGrid');
             const items = categoryData[category] || [];
             
             grid.innerHTML = items.map(item => `
-                <div class="min-w-[280px] md:min-w-[320px] bg-[#FAFAFA] border border-gray-200 p-5 group hover:border-[#C5A059] transition-all shadow-sm">
+                <div class="min-w-[280px] md:min-w-[320px] bg-[#FAFAFA] border border-gray-200 p-5 group hover:border-[#B38F27] transition-all shadow-sm">
                     <div class="h-64 bg-white border border-gray-100 flex items-center justify-center relative mb-4">
                         <span class="absolute top-3 left-3 text-[9px] uppercase tracking-widest text-gray-400">${item.tag}</span>
                         <div class="w-16 h-28 bg-[#F4F4F4] border border-gray-200 rounded-t-md relative flex items-center justify-center">
                             <span class="text-[9px] gold-text font-serif-luxury rotate-[-90deg]">${item.name.toUpperCase().substring(0, 10)}</span>
                         </div>
                     </div>
-                    <h3 class="font-serif-luxury text-lg text-black group-hover:text-[#C5A059] transition-colors">${item.name}</h3>
+                    <h3 class="font-serif-luxury text-lg text-black group-hover:text-[#B38F27] transition-colors">${item.name}</h3>
                     <p class="text-[11px] text-gray-500 font-light mt-1">${item.note}</p>
                     <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-200">
                         <span class="font-serif-luxury gold-text text-base font-semibold">${item.price}</span>
-                        <a href="#order" class="text-[10px] uppercase tracking-widest px-3 py-1.5 border gold-border gold-text hover:bg-[#C5A059] hover:text-white transition-all">Select</a>
+                        <button onclick="addToCart('${item.name}', ${item.price.replace(/[^0-9]/g, '')})" class="text-[10px] uppercase tracking-widest px-3 py-1.5 border gold-border gold-text hover:bg-[#B38F27] hover:text-white transition-all cursor-pointer">Add to Cart</button>
                     </div>
                 </div>
             `).join('');
         }
 
-        // Automatically load 'men' category products on page load so it's never empty
         window.addEventListener('DOMContentLoaded', () => {
             const firstCatBtn = document.querySelector('.cat-btn');
             switchCategory('men', firstCatBtn);
