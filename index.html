@@ -1,103 +1,215 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Portal — Perfume BD</title>
+    <title>Perfume BD — The Signature Collection</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Cormorant Garamond & Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: 'Montserrat', sans-serif; background-color: #FAFAFA; color: #1A1A1A; }
-        .gold-border { border-color: #B38F27; }
-        .gold-text { color: #B38F27; }
-        .gold-bg { background-color: #B38F27; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #FFFFFF;
+            color: #1A1A1A;
+        }
+        .font-serif-luxury {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        .gold-border {
+            border-color: #B38F27;
+        }
+        .gold-text {
+            color: #B38F27;
+        }
+        .gold-bg {
+            background-color: #B38F27;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
     </style>
 </head>
-<body class="antialiased">
+<body class="antialiased selection:bg-[#B38F27] selection:text-white">
 
-    <!-- Login Screen -->
-    <div id="loginScreen" class="min-h-screen flex items-center justify-center px-4">
-        <div class="max-w-md w-full bg-white border border-gray-200 p-8 shadow-sm">
-            <h2 class="text-xl font-bold uppercase tracking-widest text-center mb-6">Perfume BD Admin</h2>
-            <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
-                <div>
-                    <label class="block text-[10px] uppercase tracking-widest text-gray-500 mb-1">Email</label>
-                    <input type="email" id="adminEmail" value="perfumebdadmin@gmail.com" class="w-full border border-gray-300 text-xs px-3 py-2.5 focus:outline-none focus:border-[#B38F27]" required>
+    <!-- Navbar -->
+    <header class="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 h-20 flex items-center justify-between">
+            <a href="#" class="font-serif-luxury text-xl md:text-2xl tracking-widest text-black uppercase font-bold">
+                Perfume <span class="gold-text">BD</span>
+            </a>
+            
+            <nav class="hidden md:flex items-center space-x-10 text-xs tracking-widest uppercase text-gray-600">
+                <a href="#showcase" class="hover:text-[#B38F27] transition-colors">Collection</a>
+                <a href="#categories" class="hover:text-[#B38F27] transition-colors">Categories</a>
+                <a href="#all-products" class="hover:text-[#B38F27] transition-colors">All Products</a>
+                <a href="#artistry" class="hover:text-[#B38F27] transition-colors">Artistry</a>
+            </nav>
+
+            <!-- Direct Call & WhatsApp Icons + Cart Trigger -->
+            <div class="flex items-center space-x-3 md:space-x-4">
+                <!-- Call Icon -->
+                <a href="tel:+8801618362229" title="Call Admin" class="w-9 h-9 rounded-full border gold-border flex items-center justify-center gold-text hover:bg-[#B38F27] hover:text-white transition-all shadow-sm">
+                    <i class="fa-solid fa-phone text-xs"></i>
+                </a>
+                <!-- WhatsApp Icon -->
+                <a href="https://wa.me/8801618362229?text=Hello,%20I%20want%20to%20know%20more%20about%20your%20perfumes." target="_blank" title="Chat on WhatsApp" class="w-9 h-9 rounded-full border border-green-600 flex items-center justify-center text-green-600 hover:bg-green-600 hover:text-white transition-all shadow-sm">
+                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                </a>
+                <!-- Cart Button with Counter -->
+                <button onclick="toggleCartModal()" class="relative w-9 h-9 rounded-full border gold-border flex items-center justify-center gold-text hover:bg-[#B38F27] hover:text-white transition-all shadow-sm cursor-pointer">
+                    <i class="fa-solid fa-bag-shopping text-xs"></i>
+                    <span id="cartCount" class="absolute -top-1 -right-1 bg-black text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Cart Slide-over Drawer -->
+    <div id="cartDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div class="absolute inset-0 bg-black/50 transition-opacity" onclick="toggleCartModal()"></div>
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+                <div class="flex items-center justify-between px-6 py-5 border-b border-gray-200">
+                    <h3 class="font-serif-luxury text-xl font-bold uppercase tracking-widest text-black">Your Shopping Cart</h3>
+                    <button onclick="toggleCartModal()" class="text-gray-400 hover:text-black text-lg p-2"><i class="fa-solid fa-xmark"></i></button>
                 </div>
-                <div>
-                    <label class="block text-[10px] uppercase tracking-widest text-gray-500 mb-1">Password</label>
-                    <input type="password" id="adminPassword" value="Tanha200" class="w-full border border-gray-300 text-xs px-3 py-2.5 focus:outline-none focus:border-[#B38F27]" required>
+                <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-6 space-y-4">
+                    <p class="text-gray-500 text-xs text-center py-10">Your cart is currently empty.</p>
                 </div>
-                <button type="submit" class="w-full py-3 gold-bg text-white text-xs uppercase tracking-widest font-semibold cursor-pointer">Login</button>
-            </form>
+                <div class="border-t border-gray-200 p-6 space-y-4 bg-[#FAFAFA]">
+                    <div class="flex justify-between items-center text-sm font-semibold">
+                        <span>Total:</span>
+                        <span id="cartTotalPrice" class="font-serif-luxury gold-text text-lg">৳ 0</span>
+                    </div>
+                    <a href="#order" onclick="toggleCartModal(); populateOrderSelection();" class="block w-full py-3.5 gold-bg text-white text-center text-xs font-semibold uppercase tracking-widest hover:opacity-90 transition-opacity">
+                        Proceed to Checkout
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Admin Dashboard (Hidden initially) -->
-    <div id="dashboard" class="min-h-screen hidden pb-20">
-        <header class="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
-            <h1 class="text-sm font-bold uppercase tracking-widest">Perfume BD — Admin Dashboard</h1>
-            <button onclick="handleLogout()" class="text-xs text-red-600 uppercase tracking-widest font-semibold hover:underline">Logout</button>
-        </header>
-
-        <main class="max-w-5xl mx-auto px-6 py-10 space-y-12">
-            
-            <!-- Add Product Section -->
-            <section class="bg-white border border-gray-200 p-6 md:p-8 shadow-sm">
-                <h2 class="text-sm font-bold uppercase tracking-widest mb-6 gold-text">Add New Product</h2>
-                <form id="addProductForm" onsubmit="handleAddProduct(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-[10px] uppercase tracking-widest text-gray-500 mb-1">Product Name</label>
-                        <input type="text" id="prodName" class="w-full border border-gray-300 text-xs px-3 py-2" required>
+    <!-- Hero Section -->
+    <section id="showcase" class="relative pt-28 md:pt-32 pb-16 overflow-hidden border-b border-gray-100">
+        <div class="max-w-4xl mx-auto px-4 md:px-6">
+            <div class="text-center mb-6">
+                <span class="text-[10px] uppercase tracking-[0.3em] gold-text">Exclusive Allocations & Offers</span>
+                <h2 class="font-serif-luxury text-2xl md:text-4xl text-black mt-1">The Masterpiece Showcase</h2>
+            </div>
+            <div class="relative overflow-hidden rounded-sm bg-[#FAFAFA] border border-gray-200 p-6 md:p-10 shadow-sm text-center">
+                <div class="space-y-4 max-w-lg mx-auto py-6">
+                    <span class="inline-block px-3 py-1 bg-[#B38F27]/10 gold-text text-[9px] tracking-widest uppercase border border-[#B38F27]/30">QR Code Target: perfumebd.sellbd.shop</span>
+                    <h1 class="font-serif-luxury text-3xl md:text-5xl text-black leading-tight">Royal Fragrance <span class="gold-text font-light italic text-2xl md:text-3xl block">Collection Bangladesh</span></h1>
+                    <p class="text-gray-600 text-xs md:text-sm font-light leading-relaxed">
+                        Discover authentic long-lasting luxury perfumes delivered across Bangladesh with cash on delivery.
+                    </p>
+                    <div class="pt-2">
+                        <a href="#all-products" class="inline-block px-8 py-3 gold-bg text-white text-xs font-semibold uppercase tracking-widest hover:opacity-90 transition-opacity">Explore Collection</a>
                     </div>
-                    <div>
-                        <label class="block text-[10px] uppercase tracking-widest text-gray-500 mb-1">Price (৳)</label>
-                        <input type="number" id="prodPrice" class="w-full border border-gray-300 text-xs px-3 py-2" required>
-                    </div>
-                    <div>
-                        <label class="block text-[10px] uppercase tracking-widest text-gray-500 mb-1">Old Price (Optional)</label>
-                        <input type="number" id="prodOldPrice" class="w-full border border-gray-300 text-xs px-3 py-2">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] uppercase tracking-widest text-gray-500 mb-1">Badge (e.g. New, Limited)</label>
-                        <input type="text" id="prodBadge" class="w-full border border-gray-300 text-xs px-3 py-2">
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="block text-[10px] uppercase tracking-widest text-gray-500 mb-1">Product Image</label>
-                        <input type="file" id="prodImage" accept="image/*" class="w-full border border-gray-300 text-xs px-3 py-2 bg-gray-50" required>
-                    </div>
-                    <div class="md:col-span-2 pt-2">
-                        <button type="submit" id="saveProdBtn" class="px-6 py-3 gold-bg text-white text-xs uppercase tracking-widest font-semibold cursor-pointer">Save Product</button>
-                    </div>
-                </form>
-            </section>
-
-            <!-- Product List Section -->
-            <section class="bg-white border border-gray-200 p-6 md:p-8 shadow-sm">
-                <h2 class="text-sm font-bold uppercase tracking-widest mb-6 gold-text">Manage Products</h2>
-                <div id="adminProductList" class="space-y-3">
-                    <p class="text-xs text-gray-400">Loading products...</p>
                 </div>
-            </section>
+            </div>
+        </div>
+    </section>
 
-            <!-- Orders List Section -->
-            <section class="bg-white border border-gray-200 p-6 md:p-8 shadow-sm">
-                <h2 class="text-sm font-bold uppercase tracking-widest mb-6 gold-text">Customer Orders</h2>
-                <div id="adminOrderList" class="space-y-3">
-                    <p class="text-xs text-gray-400">Loading orders...</p>
+    <!-- Dynamic Products Section Loaded from Firestore -->
+    <section id="all-products" class="py-20 bg-[#FAFAFA] border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 mb-12 text-center">
+            <span class="text-[10px] uppercase tracking-[0.3em] gold-text">Live Inventory</span>
+            <h2 class="font-serif-luxury text-3xl md:text-4xl text-black mt-1">PERFUME BD ALL PRODUCTS</h2>
+            <p class="text-gray-500 text-xs max-w-md mx-auto mt-2 font-light">Products managed via Admin panel load automatically here.</p>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6">
+            <div id="dynamicProductsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Dynamically populated via Firebase -->
+                <p class="text-gray-400 text-xs text-center col-span-full py-10">Loading catalog from database...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Artistry Section -->
+    <section id="artistry" class="py-20 bg-white border-y border-gray-200">
+        <div class="max-w-5xl mx-auto px-6 text-center">
+            <span class="text-[10px] uppercase tracking-[0.3em] gold-text">Olfactory Hierarchy</span>
+            <h2 class="font-serif-luxury text-3xl md:text-4xl text-black mt-1 mb-12">The Anatomy of a Masterpiece</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+                <div class="p-6 bg-[#FAFAFA] border border-gray-200 shadow-sm">
+                    <span class="text-xs gold-text uppercase tracking-widest font-medium">01 / Opening</span>
+                    <h3 class="font-serif-luxury text-xl text-black mt-2 mb-1">Top Notes</h3>
+                    <p class="text-gray-600 text-xs font-light leading-relaxed">Bergamot, pink pepper, and citrus accords.</p>
                 </div>
-            </section>
+                <div class="p-6 bg-[#FAFAFA] border border-gray-200 shadow-sm">
+                    <span class="text-xs gold-text uppercase tracking-widest font-medium">02 / Heart</span>
+                    <h3 class="font-serif-luxury text-xl text-black mt-2 mb-1">Heart Notes</h3>
+                    <p class="text-gray-600 text-xs font-light leading-relaxed">Floral bouquets, spices, and lavender depth.</p>
+                </div>
+                <div class="p-6 bg-[#FAFAFA] border border-gray-200 shadow-sm">
+                    <span class="text-xs gold-text uppercase tracking-widest font-medium">03 / Foundation</span>
+                    <h3 class="font-serif-luxury text-xl text-black mt-2 mb-1">Base Notes</h3>
+                    <p class="text-gray-600 text-xs font-light leading-relaxed">Warm amber, rich oud, white musk, and vanilla bean.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        </main>
-    </div>
+    <!-- Checkout Form Section -->
+    <section id="order" class="py-24 max-w-xl mx-auto px-6">
+        <div class="text-center mb-10">
+            <span class="text-[10px] uppercase tracking-[0.3em] gold-text">Exclusive Allocation</span>
+            <h2 class="font-serif-luxury text-3xl text-black mt-1">Acquire Your Scent</h2>
+            <p class="text-gray-600 text-xs mt-2 font-light">Provide your delivery credentials below. Submitting will save your order and open WhatsApp with details pre-filled.</p>
+        </div>
+
+        <form id="orderForm" onsubmit="submitOrder(event)" class="bg-[#FAFAFA] border border-gray-200 p-8 md:p-10 space-y-6 shadow-lg">
+            <div>
+                <label class="block text-[10px] uppercase tracking-widest text-gray-600 mb-2 font-medium">Select Fragrance</label>
+                <select id="orderProductSelect" class="w-full bg-white border border-gray-300 text-black text-xs px-4 py-3 focus:outline-none focus:border-[#B38F27]" required>
+                    <option value="">Select a product...</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-[10px] uppercase tracking-widest text-gray-600 mb-2 font-medium">Your Full Name</label>
+                <input type="text" id="orderName" placeholder="e.g. Tanvir Ahmed" class="w-full bg-white border border-gray-300 text-black text-xs px-4 py-3 focus:outline-none focus:border-[#B38F27]" required>
+            </div>
+
+            <div>
+                <label class="block text-[10px] uppercase tracking-widest text-gray-600 mb-2 font-medium">Mobile Number</label>
+                <input type="tel" id="orderPhone" placeholder="01XXXXXXXXX" class="w-full bg-white border border-gray-300 text-black text-xs px-4 py-3 focus:outline-none focus:border-[#B38F27]" required>
+            </div>
+
+            <div>
+                <label class="block text-[10px] uppercase tracking-widest text-gray-600 mb-2 font-medium">Complete Delivery Address</label>
+                <textarea id="orderAddress" rows="3" placeholder="House/Road, Area, City" class="w-full bg-white border border-gray-300 text-black text-xs px-4 py-3 focus:outline-none focus:border-[#B38F27]" required></textarea>
+            </div>
+
+            <button type="submit" class="w-full py-4 gold-bg text-white text-xs font-semibold uppercase tracking-[0.2em] hover:opacity-90 transition-opacity mt-2 shadow-sm cursor-pointer">
+                Confirm & Send via WhatsApp
+            </button>
+            <p class="text-[10px] text-center text-gray-500 uppercase tracking-widest mt-2">Cash on Delivery Available Across Bangladesh</p>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-10 border-t border-gray-200 text-center text-gray-500 text-xs bg-[#FAFAFA]">
+        <p class="font-serif-luxury tracking-widest text-black text-base mb-2 font-bold">PERFUME <span class="gold-text">BD</span></p>
+        <p class="font-light">&copy; 2026 Perfume BD. All Rights Reserved. QR Target: perfumebd.sellbd.shop</p>
+    </footer>
 
     <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
-        import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyByTWDqbcioz1CJGRZB38RN8ADXIjBH4iA",
@@ -110,132 +222,159 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
         const db = getFirestore(app);
 
-        window.handleLogin = async function(e) {
-            e.preventDefault();
-            const email = document.getElementById('adminEmail').value;
-            const pass = document.getElementById('adminPassword').value;
+        let cart = [];
+        let allProducts = [];
+
+        async function loadProducts() {
+            const grid = document.getElementById('dynamicProductsGrid');
+            const select = document.getElementById('orderProductSelect');
             try {
-                await signInWithEmailAndPassword(auth, email, pass);
-            } catch (err) {
-                alert("Login failed: " + err.message);
-            }
-        }
-
-        window.handleLogout = async function() {
-            await signOut(auth);
-        }
-
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                document.getElementById('loginScreen').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
-                loadAdminData();
-            } else {
-                document.getElementById('loginScreen').classList.remove('hidden');
-                document.getElementById('dashboard').classList.add('hidden');
-            }
-        });
-
-        window.handleAddProduct = async function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('saveProdBtn');
-            btn.innerText = "Uploading image...";
-            btn.disabled = true;
-
-            const name = document.getElementById('prodName').value;
-            const price = Number(document.getElementById('prodPrice').value);
-            const oldPrice = document.getElementById('prodOldPrice').value ? Number(document.getElementById('prodOldPrice').value) : null;
-            const badge = document.getElementById('prodBadge').value;
-            const fileInput = document.getElementById('prodImage').files[0];
-
-            try {
-                let imageUrl = "";
-                if (fileInput) {
-                    const formData = new FormData();
-                    formData.append('file', fileInput);
-                    formData.append('upload_preset', 'perfumebd_products');
-
-                    const res = await fetch(`https://api.cloudinary.com/v1_1/cgl2rdax/image/upload`, {
-                        method: 'POST',
-                        body: formData
-                    });
-                    const data = await res.json();
-                    imageUrl = data.secure_url;
-                }
-
-                await addDoc(collection(db, "products"), {
-                    name, price, oldPrice, badge, imageUrl, createdAt: serverTimestamp()
+                const querySnapshot = await getDocs(collection(db, "products"));
+                allProducts = [];
+                querySnapshot.forEach((doc) => {
+                    allProducts.push({ id: doc.id, ...doc.data() });
                 });
 
-                alert("Product added successfully!");
-                document.getElementById('addProductForm').reset();
-                loadAdminData();
-            } catch (err) {
-                console.error(err);
-                alert("Error adding product.");
-            } finally {
-                btn.innerText = "Save Product";
-                btn.disabled = false;
-            }
-        }
+                if (allProducts.length === 0) {
+                    grid.innerHTML = `<p class="text-gray-400 text-xs text-center col-span-full py-10">No products available yet. Add products from the admin panel.</p>`;
+                    return;
+                }
 
-        async function loadAdminData() {
-            // Load Products
-            const prodList = document.getElementById('adminProductList');
-            const prodSnap = await getDocs(collection(db, "products"));
-            let productsHTML = "";
-            prodSnap.forEach(d => {
-                const p = d.data();
-                productsHTML += `
-                    <div class="flex items-center justify-between border-b border-gray-100 pb-3 text-xs">
-                        <div class="flex items-center space-x-3">
-                            ${p.imageUrl ? `<img src="${p.imageUrl}" class="w-10 h-10 object-cover border">` : ''}
-                            <div>
-                                <span class="font-bold">${p.name}</span> — ৳${p.price} ${p.badge ? `(${p.badge})` : ''}
+                grid.innerHTML = allProducts.map(p => `
+                    <div class="bg-white border border-gray-200 p-4 group hover:border-[#B38F27] transition-all shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="h-48 bg-[#F9F9F9] border border-gray-100 flex items-center justify-center relative mb-3 overflow-hidden">
+                                ${p.badge ? `<span class="absolute top-2 left-2 text-[8px] uppercase tracking-widest gold-bg text-white px-2 py-0.5">${p.badge}</span>` : ''}
+                                ${p.imageUrl ? `<img src="${p.imageUrl}" alt="${p.name}" class="w-full h-full object-cover">` : `<span class="text-[9px] text-gray-400">No Image</span>`}
+                            </div>
+                            <h4 class="font-serif-luxury text-base text-black group-hover:text-[#B38F27]">${p.name}</h4>
+                            <div class="mt-2 flex items-center gap-2">
+                                <span class="font-serif-luxury gold-text font-semibold text-sm">৳ ${p.price}</span>
+                                ${p.oldPrice ? `<span class="text-xs text-gray-400 line-through">৳ ${p.oldPrice}</span>` : ''}
                             </div>
                         </div>
-                        <button onclick="deleteProduct('${d.id}')" class="text-red-500 hover:underline">Delete</button>
-                    </div>
-                `;
-            });
-            prodList.innerHTML = productsHTML || `<p class="text-xs text-gray-400">No products found.</p>`;
-
-            // Load Orders
-            const orderList = document.getElementById('adminOrderList');
-            const orderSnap = await getDocs(collection(db, "orders"));
-            let ordersHTML = "";
-            orderSnap.forEach(d => {
-                const o = d.data();
-                ordersHTML += `
-                    <div class="border border-gray-200 p-4 rounded text-xs space-y-1 bg-[#FAFAFA]">
-                        <div class="flex justify-between font-bold text-black">
-                            <span>Product: ${o.product}</span>
-                            <button onclick="deleteOrder('${d.id}')" class="text-red-500">Delete</button>
+                        <div class="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
+                            <button onclick="addToCart('${p.name.replace(/'/g, "\\'")}', ${p.price})" class="text-[9px] uppercase tracking-widest px-3 py-1.5 border gold-border gold-text hover:bg-[#B38F27] hover:text-white cursor-pointer transition-all">Add to Cart</button>
+                            <a href="#order" onclick="selectProductForOrder('${p.name.replace(/'/g, "\\'")}')" class="text-[9px] uppercase tracking-widest px-3 py-1.5 gold-bg text-white hover:opacity-90 transition-all">Order Now</a>
                         </div>
-                        <div>Name: ${o.name} | Phone: ${o.phone}</div>
-                        <div>Address: ${o.address}</div>
                     </div>
-                `;
-            });
-            orderList.innerHTML = ordersHTML || `<p class="text-xs text-gray-400">No orders received yet.</p>`;
-        }
+                `).join('');
 
-        window.deleteProduct = async function(id) {
-            if(confirm("Are you sure you want to delete this product?")) {
-                await deleteDoc(doc(db, "products", id));
-                loadAdminData();
+                select.innerHTML = `<option value="">Select a product...</option>` + allProducts.map(p => `
+                    <option value="${p.name} - ৳${p.price}">${p.name} — ৳${p.price}</option>
+                `).join('');
+
+            } catch (err) {
+                console.error("Error loading products:", err);
+                grid.innerHTML = `<p class="text-red-500 text-xs text-center col-span-full py-10">Failed to load products. Check Firestore Security Rules.</p>`;
             }
         }
 
-        window.deleteOrder = async function(id) {
-            if(confirm("Delete this order record?")) {
-                await deleteDoc(doc(db, "orders", id));
-                loadAdminData();
+        window.addToCart = function(name, price) {
+            const existing = cart.find(i => i.name === name);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ name, price, qty: 1 });
+            }
+            updateCartUI();
+            
+            const n = document.createElement('div');
+            n.className = 'fixed bottom-5 right-5 bg-black text-white text-[10px] tracking-widest uppercase px-4 py-3 shadow-xl z-50 border border-[#B38F27]';
+            n.innerText = `${name} added to cart`;
+            document.body.appendChild(n);
+            setTimeout(() => n.remove(), 2000);
+        }
+
+        window.removeFromCart = function(name) {
+            cart = cart.filter(i => i.name !== name);
+            updateCartUI();
+        }
+
+        window.updateCartUI = function() {
+            const countEl = document.getElementById('cartCount');
+            const container = document.getElementById('cartItemsContainer');
+            const totalEl = document.getElementById('cartTotalPrice');
+
+            const totalCount = cart.reduce((sum, i) => sum + i.qty, 0);
+            const totalPrice = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+
+            countEl.innerText = totalCount;
+            totalEl.innerText = `৳ ${totalPrice.toLocaleString()}`;
+
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-gray-500 text-xs text-center py-10">Your cart is currently empty.</p>`;
+                return;
+            }
+
+            container.innerHTML = cart.map(i => `
+                <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                    <div>
+                        <h4 class="font-serif-luxury text-sm font-semibold text-black">${i.name}</h4>
+                        <p class="text-[10px] text-gray-500">৳ ${i.price} × ${i.qty}</p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <span class="font-serif-luxury gold-text font-semibold text-sm">৳ ${i.price * i.qty}</span>
+                        <button onclick="removeFromCart('${i.name}')" class="text-gray-400 hover:text-red-500 text-xs"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        window.toggleCartModal = function() {
+            document.getElementById('cartDrawer').classList.toggle('hidden');
+        }
+
+        window.selectProductForOrder = function(name) {
+            const select = document.getElementById('orderProductSelect');
+            for (let opt of select.options) {
+                if (opt.value.includes(name)) {
+                    select.value = opt.value;
+                    break;
+                }
             }
         }
+
+        window.populateOrderSelection = function() {
+            if (cart.length > 0) {
+                const select = document.getElementById('orderProductSelect');
+                const last = cart[cart.length - 1];
+                for (let opt of select.options) {
+                    if (opt.value.includes(last.name)) {
+                        select.value = opt.value;
+                        break;
+                    }
+                }
+            }
+        }
+
+        window.submitOrder = async function(e) {
+            e.preventDefault();
+            const product = document.getElementById('orderProductSelect').value;
+            const name = document.getElementById('orderName').value;
+            const phone = document.getElementById('orderPhone').value;
+            const address = document.getElementById('orderAddress').value;
+
+            try {
+                await addDoc(collection(db, "orders"), {
+                    product, name, phone, address,
+                    createdAt: serverTimestamp()
+                });
+
+                const whatsappNumber = "8801618362229";
+                const msg = encodeURIComponent(`New Order Placed!\n\nProduct: ${product}\nName: ${name}\nPhone: ${phone}\nAddress: ${address}`);
+                window.open(`https://wa.me/${whatsappNumber}?text=${msg}`, '_blank');
+                alert("Order successfully placed and saved!");
+                document.getElementById('orderForm').reset();
+            } catch (err) {
+                console.error("Error saving order:", err);
+                alert("Failed to save order. Please ensure Firestore Security Rules are published.");
+            }
+        }
+
+        loadProducts();
     </script>
 </body>
 </html>
