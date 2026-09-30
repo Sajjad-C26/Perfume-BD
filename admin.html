@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal — Perfume BD</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background-color: #FAFAFA; color: #1A1A1A; }
+        .gold-border { border-color: #B38F27; }
+        .gold-text { color: #B38F27; }
+        .gold-bg { background-color: #B38F27; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Login Screen -->
+    <div id="loginScreen" class="min-h-screen flex items-center justify-center px-4">
+        <div class="max-w-md w-full bg-white border border-gray-200 p-8 shadow-sm">
+            <h2 class="text-xl font-bold uppercase tracking-widest text-center mb-6">Perfume BD Admin</h2>
+            <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest text-gray-500 mb-1">Email</label>
+                    <input type="email" id="adminEmail" value="perfumebdadmin@gmail.com" class="w-full border border-gray-300 text-xs px-3 py-2.5 focus:outline-none focus:border-[#B38F27]" required>
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase tracking-widest text-gray-500 mb-1">Password</label>
+                    <input type="password" id="adminPassword" value="Tanha200" class="w-full border border-gray-300 text-xs px-3 py-2.5 focus:outline-none focus:border-[#B38F27]" required>
+                </div>
+                <button type="submit" class="w-full py-3 gold-bg text-white text-xs uppercase tracking-widest font-semibold cursor-pointer">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard (Hidden initially) -->
+    <div id="dashboard" class="min-h-screen hidden pb-20">
+        <header class="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+            <h1 class="text-sm font-bold uppercase tracking-widest">Perfume BD — Admin Dashboard</h1>
+            <button onclick="handleLogout()" class="text-xs text-red-600 uppercase tracking-widest font-semibold hover:underline">Logout</button>
+        </header>
+
+        <main class="max-w-5xl mx-auto px-6 py-10 space-y-12">
+            
+            <!-- Add Product Section -->
+            <section class="bg-white border border-gray-200 p-6 md:p-8 shadow-sm">
+                <h2 class="text-sm font-bold uppercase tracking-widest mb-6 gold-text">Add New Product</h2>
+                <form id="addProductForm" onsubmit="handleAddProduct(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] uppercase tracking-widest text-gray-500 mb-1">Product Name</label>
+                        <input type="text" id="prodName" class="w-full border border-gray-300 text-xs px-3 py-2" required>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] uppercase tracking-widest text-gray-500 mb-1">Price (৳)</label>
+                        <input type="number" id="prodPrice" class="w-full border border-gray-300 text-xs px-3 py-2" required>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] uppercase tracking-widest text-gray-500 mb-1">Old Price (Optional)</label>
+                        <input type="number" id="prodOldPrice" class="w-full border border-gray-300 text-xs px-3 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] uppercase tracking-widest text-gray-500 mb-1">Badge (e.g. New, Limited)</label>
+                        <input type="text" id="prodBadge" class="w-full border border-gray-300 text-xs px-3 py-2">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-[10px] uppercase tracking-widest text-gray-500 mb-1">Product Image</label>
+                        <input type="file" id="prodImage" accept="image/*" class="w-full border border-gray-300 text-xs px-3 py-2 bg-gray-50" required>
+                    </div>
+                    <div class="md:col-span-2 pt-2">
+                        <button type="submit" id="saveProdBtn" class="px-6 py-3 gold-bg text-white text-xs uppercase tracking-widest font-semibold cursor-pointer">Save Product</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Product List Section -->
+            <section class="bg-white border border-gray-200 p-6 md:p-8 shadow-sm">
+                <h2 class="text-sm font-bold uppercase tracking-widest mb-6 gold-text">Manage Products</h2>
+                <div id="adminProductList" class="space-y-3">
+                    <p class="text-xs text-gray-400">Loading products...</p>
+                </div>
+            </section>
+
+            <!-- Orders List Section -->
+            <section class="bg-white border border-gray-200 p-6 md:p-8 shadow-sm">
+                <h2 class="text-sm font-bold uppercase tracking-widest mb-6 gold-text">Customer Orders</h2>
+                <div id="adminOrderList" class="space-y-3">
+                    <p class="text-xs text-gray-400">Loading orders...</p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+        import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyByTWDqbcioz1CJGRZB38RN8ADXIjBH4iA",
+            authDomain: "perfume-bd-e6935.firebaseapp.com",
+            projectId: "perfume-bd-e6935",
+            storageBucket: "perfume-bd-e6935.firebasestorage.app",
+            messagingSenderId: "1007653869775",
+            appId: "1:1007653869775:web:35e1e3197d71fb49f03fba",
+            measurementId: "G-FD4SGJMDK9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        window.handleLogin = async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('adminEmail').value;
+            const pass = document.getElementById('adminPassword').value;
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+            } catch (err) {
+                alert("Login failed: " + err.message);
+            }
+        }
+
+        window.handleLogout = async function() {
+            await signOut(auth);
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                loadAdminData();
+            } else {
+                document.getElementById('loginScreen').classList.remove('hidden');
+                document.getElementById('dashboard').classList.add('hidden');
+            }
+        });
+
+        window.handleAddProduct = async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('saveProdBtn');
+            btn.innerText = "Uploading image...";
+            btn.disabled = true;
+
+            const name = document.getElementById('prodName').value;
+            const price = Number(document.getElementById('prodPrice').value);
+            const oldPrice = document.getElementById('prodOldPrice').value ? Number(document.getElementById('prodOldPrice').value) : null;
+            const badge = document.getElementById('prodBadge').value;
+            const fileInput = document.getElementById('prodImage').files[0];
+
+            try {
+                let imageUrl = "";
+                if (fileInput) {
+                    const formData = new FormData();
+                    formData.append('file', fileInput);
+                    formData.append('upload_preset', 'perfumebd_products');
+
+                    const res = await fetch(`https://api.cloudinary.com/v1_1/cgl2rdax/image/upload`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const data = await res.json();
+                    imageUrl = data.secure_url;
+                }
+
+                await addDoc(collection(db, "products"), {
+                    name, price, oldPrice, badge, imageUrl, createdAt: serverTimestamp()
+                });
+
+                alert("Product added successfully!");
+                document.getElementById('addProductForm').reset();
+                loadAdminData();
+            } catch (err) {
+                console.error(err);
+                alert("Error adding product.");
+            } finally {
+                btn.innerText = "Save Product";
+                btn.disabled = false;
+            }
+        }
+
+        async function loadAdminData() {
+            // Load Products
+            const prodList = document.getElementById('adminProductList');
+            const prodSnap = await getDocs(collection(db, "products"));
+            let productsHTML = "";
+            prodSnap.forEach(d => {
+                const p = d.data();
+                productsHTML += `
+                    <div class="flex items-center justify-between border-b border-gray-100 pb-3 text-xs">
+                        <div class="flex items-center space-x-3">
+                            ${p.imageUrl ? `<img src="${p.imageUrl}" class="w-10 h-10 object-cover border">` : ''}
+                            <div>
+                                <span class="font-bold">${p.name}</span> — ৳${p.price} ${p.badge ? `(${p.badge})` : ''}
+                            </div>
+                        </div>
+                        <button onclick="deleteProduct('${d.id}')" class="text-red-500 hover:underline">Delete</button>
+                    </div>
+                `;
+            });
+            prodList.innerHTML = productsHTML || `<p class="text-xs text-gray-400">No products found.</p>`;
+
+            // Load Orders
+            const orderList = document.getElementById('adminOrderList');
+            const orderSnap = await getDocs(collection(db, "orders"));
+            let ordersHTML = "";
+            orderSnap.forEach(d => {
+                const o = d.data();
+                ordersHTML += `
+                    <div class="border border-gray-200 p-4 rounded text-xs space-y-1 bg-[#FAFAFA]">
+                        <div class="flex justify-between font-bold text-black">
+                            <span>Product: ${o.product}</span>
+                            <button onclick="deleteOrder('${d.id}')" class="text-red-500">Delete</button>
+                        </div>
+                        <div>Name: ${o.name} | Phone: ${o.phone}</div>
+                        <div>Address: ${o.address}</div>
+                    </div>
+                `;
+            });
+            orderList.innerHTML = ordersHTML || `<p class="text-xs text-gray-400">No orders received yet.</p>`;
+        }
+
+        window.deleteProduct = async function(id) {
+            if(confirm("Are you sure you want to delete this product?")) {
+                await deleteDoc(doc(db, "products", id));
+                loadAdminData();
+            }
+        }
+
+        window.deleteOrder = async function(id) {
+            if(confirm("Delete this order record?")) {
+                await deleteDoc(doc(db, "orders", id));
+                loadAdminData();
+            }
+        }
+    </script>
+</body>
+</html>
